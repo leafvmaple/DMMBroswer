@@ -1,0 +1,21 @@
+{
+  "name": "flower",
+  "version": "v0.0.1",
+  "description": "flower the FlowerKnight Browser Tool",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gulp deploy",
+    "start": "electron ./app_compiled"
+  },
+  "dependencies": {
+    "coffee-script": "^1.9.3"
+  },
+  "devDependencies": {
+    "electron-builder": "^5.4.3",
+    "electron-prebuilt": "^1.2.5",
+    "gulp": "^3.9.0"
+  },
+  "directories": {
+    "app": "app_compiled"
+  }
+}
