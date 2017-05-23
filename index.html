@@ -2,7 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>flower</title>
+  <title>Flower</title>
+  <link rel="stylesheet" href="./assets/css/app.css">
+  <link rel="stylesheet" id="layout-css" href="./assets/css/layout.horizontal.css">
   <script>
     require('coffee-script/register');
     require('babel-register')(require('./babel.config'));
@@ -11,8 +13,8 @@
 </head>
 <body>
   <flower-main>
-    <fk-game>
-      <div class="fk-game-warpper">
+    <dmm-game>
+      <div class="dmm-game-warpper">
         <div id="webview-wrapper" style="height: 480px">
           <webview src="about:blank" ondrop="event.preventDefault();" plugins disablewebsecurity preload="./assets/js/webview-preload.js"></webview>
         </div>
@@ -24,7 +26,7 @@
         </flower-info>
         <hr>
       </div>
-    </fk-game>
+    </dmm-game>
     <flower-app>
       <div id='flower-app-container'>
         <flower-nav>

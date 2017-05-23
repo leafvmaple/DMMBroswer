@@ -2,17 +2,29 @@ import { remote } from 'electron'
 
 const {$, config} = window
 
+window.addEventListener('game.request', (e) => {
+  const {method} = e.detail
+  const resPath = e.detail.path
+})
+
+window.addEventListener('game.response', (e) => {
+  const {method, body, postBody, time} = e.detail
+  const resPath = e.detail.path
+  if (config.get('poi.showNetworkLog', true)) {
+    log(`${__('Hit')} ${method} ${resPath}`, {dontReserve: true})
+  }
+})
+
 remote.getCurrentWebContents().on('dom-ready', () => {
   if (config.get('flower.content.muted', false)) {
-    $('fk-game webview').setAudioMuted(true)
+    $('dmm-game webview').setAudioMuted(true)
   }
-  if ($('fk-game').style.display !== 'none')  {
-    $('fk-game webview').loadURL(config.get('flower.homepage', 'http://www.dmm.com/netgame/social/application/-/detail/=/app_id=854854/'))
+  if ($('dmm-game').style.display !== 'none')  {
+    $('dmm-game webview').loadURL(config.get('flower.homepage', 'http://www.dmm.co.jp/netgame/social/-/gadgets/=/app_id=329993/'))
   }
-  $('fk-game webview').addEventListener('dom-ready', (e) => {
-    debugger;
+  $('dmm-game webview').addEventListener('dom-ready', (e) => {
     if (config.get('flower.enableDMMcookie', false)) {
-      $('fk-game webview').executeJavaScript(`
+      $('dmm-game webview').executeJavaScript(`
         document.cookie = "cklg=welcome;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/";
         document.cookie = "cklg=welcome;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/netgame/";
         document.cookie = "cklg=welcome;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/netgame_s/";
@@ -26,10 +38,10 @@ remote.getCurrentWebContents().on('dom-ready', () => {
       `)
     }
     if (config.get('flower.disableNetworkAlert', false)) {
-      $('fk-game webview').executeJavaScript('DMM.netgame.reloadDialog=function(){}')
+      $('dmm-game webview').executeJavaScript('DMM.netgame.reloadDialog=function(){}')
     }
   })
-  $('fk-game webview').addEventListener('new-window', (e) => {
+  $('dmm-game webview').addEventListener('new-window', (e) => {
     const exWindow = WindowManager.createWindow({
       realClose: true,
       navigatable: true,

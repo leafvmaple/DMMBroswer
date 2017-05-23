@@ -3,7 +3,6 @@ import EventEmitter from 'events'
 import CSON from 'cson'
 import fs from 'fs-extra'
 import path from 'path-extra'
-//import dbg from './debug'
 
 const {ROOT, EXROOT} = global
 const defaultConfigPath = path.join(ROOT, 'config.cson')
@@ -16,20 +15,16 @@ class configClass extends EventEmitter {
     try {
       fs.accessSync(configPath, fs.R_OK | fs.W_OK)
       this.configData = CSON.parseCSONFile(configPath)
-      //dbg.log `Config loaded from: ${configPath}`
     }
     catch (e) {
-      //dbg.log(e)
     }
     if (!this.configData) {
       try {
         fs.accessSync(defaultConfigPath, fs.R_OK)
         this.configData = CSON.parseCSONFile(defaultConfigPath) || {}
-        //dbg.log `Config loaded from: ${defaultConfigPath}`
       }
       catch (e) {
         this.configData = {}
-        //dbg.log(e)
       }
     }
     this.get = (path, value) => {

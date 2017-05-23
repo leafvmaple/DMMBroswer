@@ -1,0 +1,19 @@
+flower-main {
+  display: flex;
+  flex-flow: row nowrap;
+}
+dmm-game {
+  flex: 5 0px;
+}
+flower-app {
+  flex: 2 0px;
+}
+.double-tabbed dmm-game {
+  flex: 4 0px;
+}
+.double-tabbed flower-app {
+  flex: 3 0px;
+}
+hr {
+  display: none;
+}

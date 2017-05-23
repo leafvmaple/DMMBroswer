@@ -19,7 +19,4 @@ window.align = async function () {
   const zl = webFrame.getZoomLevel()
   webFrame.setLayoutZoomLevelLimits(zl, zl)
   window.scrollTo(0, 0)
-  if (!window.location.toString().includes("http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/")) {
-    return
-  }
 }
