@@ -5,12 +5,36 @@
   <title>flower</title>
   <script>
     require('coffee-script/register');
+    require('babel-register')(require('./babel.config'));
+    require('./views/window');
   </script>
 </head>
 <body>
-  <h1>Hello World!</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+  <flower-main>
+    <fk-game>
+      <div class="fk-game-warpper">
+        <div id="webview-wrapper" style="height: 480px">
+          <webview src="about:blank" ondrop="event.preventDefault();" plugins disablewebsecurity preload="./assets/js/webview-preload.js"></webview>
+        </div>
+        <hr>
+        <flower-info>
+          <flower-control></flower-control>
+          <flower-alert></flower-alert>
+          <flower-map-reminder></flower-map-reminder>
+        </flower-info>
+        <hr>
+      </div>
+    </fk-game>
+    <flower-app>
+      <div id='flower-app-container'>
+        <flower-nav>
+          <flower-nav-tabs />
+        </flower-nav>
+      </div>
+    </flower-app>
+  </flower-main>
+  <script>
+    require('./views/services');
+  </script>
 </body>
 </html>
