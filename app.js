@@ -10,7 +10,10 @@ global.DEFAULT_CACHE_PATH = path.join(global.EXROOT, 'MyCache')
 global.MODULE_PATH = path.join(global.ROOT, "node_modules")
 
 const config = require('./lib/config')
+const proxy = require('./lib/proxy')
 const iconPath = path.join(ROOT, 'assets', 'icons', 'flower.jpg')
+
+proxy.setMaxListeners(30)
 
 if (config.get('flower.disableHA', false)) {
   app.disableHardwareAcceleration()
