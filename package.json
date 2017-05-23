@@ -18,8 +18,10 @@
     "coffee-script": "^1.9.3",
     "cson": "^4.0.0",
     "fs-extra": "^2.1.2",
+    "header-case-normalizer": "^1.0.3",
     "lodash": "^4.14.1",
-    "path-extra": "4.1.0"
+    "path-extra": "4.1.0",
+    "request": "^2.74.0"
   },
   "devDependencies": {
     "electron-builder": "^5.4.3",
