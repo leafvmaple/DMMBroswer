@@ -5,6 +5,7 @@ import http from 'http'
 import url from 'url'
 import net from 'net'
 import request from 'request'
+import querystring from 'querystring'
 import caseNormalizer from 'header-case-normalizer'
 import config from './config'
 
@@ -38,7 +39,8 @@ const resolveBody = (encoding, body) => {
 
 const resolve = (req) => {
   const host = config.get('proxy.http.host', '127.0.0.1')
-  const port = config.get('proxy.http.port', 8099)
+  //const port = config.get('proxy.http.port', 8099)
+  const port = config.get('proxy.http.port', 1080)
   const requirePassword = config.get('proxy.http.requirePassword', false)
   const username = config.get('proxy.http.username', '')
   const password = config.get('proxy.http.password', '')
@@ -55,16 +57,24 @@ class Proxy extends EventEmitter {
     this.load()
   }
   load = () => {
+    let isCreated = false
     this.server = http.createServer((req, res) => {
       delete req.headers['proxy-connection']
       req.headers['connection'] = 'close'
       const parsed = url.parse(req.url)
+      if (!isCreated && parsed.hostname == "web.flower-knight-girls.co.jp" && parsed.pathname.startsWith('/api/v1')) {
+        isCreated = true
+        this.emit('network.get.server', {
+          ip: parsed.hostname,
+        })
+      }
       let reqBody = Buffer.alloc(0)
       req.on ('data', (data) => {
         reqBody = Buffer.concat([reqBody, data])
       })
       let cacheFile = null
       req.on('end', async () => {
+        let domain, pathname, requrl
         let options = {
           method: req.method,
           url: req.url,
@@ -77,6 +87,11 @@ class Proxy extends EventEmitter {
             body: reqBody,
           })
         }
+        domain = req.headers.origin
+        pathname = parsed.pathname
+        requrl = req.url
+        reqBody = JSON.stringify(querystring.parse(reqBody.toString()))
+        this.emit('network.on.request', req.method, [domain, pathname, requrl], reqBody, Date.now())
         const [response, body] = await new Promise((promise_resolve, promise_reject) => {
           request(resolve(options), (err, res_response, res_body) => {
             if (!err) {
@@ -86,7 +101,8 @@ class Proxy extends EventEmitter {
             }
           }).pipe(res)
         })
-        await resolveBody(response.headers['content-encoding'], body)
+        let resolvedBody = await resolveBody(response.headers['content-encoding'], body)
+        this.emit('network.on.response', req.method, [domain, pathname, requrl], JSON.stringify(resolvedBody), reqBody, Date.now())
         res.end()
       })
     })
@@ -97,7 +113,8 @@ class Proxy extends EventEmitter {
       let remote = null
       const remoteUrl = url.parse(`https://${req.url}`)
       const host = config.get('proxy.http.host', '127.0.0.1')
-      const port = config.get('proxy.http.port', 8099)
+      //const port = config.get('proxy.http.port', 8099)
+      const port = config.get('proxy.http.port', 1080)
       let msg = `CONNECT ${remoteUrl.hostname}:${remoteUrl.port} HTTP/${req.httpVersion}\r\n`
       for (const k in req.headers) {
         msg += `${caseNormalizer(k)}: ${req.headers[k]}\r\n`
@@ -116,11 +133,9 @@ class Proxy extends EventEmitter {
         client.end()
       })
       client.on('error', (e) => {
-        error(e)
         remote.destroy()
       })
       remote.on('error', (e) => {
-        error(e)
         client.destroy()
       })
       client.on('timeout', () => {
