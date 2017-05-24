@@ -11,7 +11,7 @@ window.addEventListener('game.response', (e) => {
   const {method, body, postBody, time} = e.detail
   const resPath = e.detail.path
   if (config.get('poi.showNetworkLog', true)) {
-    console.log(`${__('Hit')} ${method} ${resPath}`, {dontReserve: true})
+    //console.log(`${__('Hit')} ${method} ${resPath}`, {dontReserve: true})
   }
 })
 

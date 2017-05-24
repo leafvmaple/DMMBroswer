@@ -11,21 +11,30 @@ import config from './config'
 
 const zlib = bluebird.promisifyAll(require('zlib'))
 
-const resolveBody = (encoding, body) => {
+const bodyParse = (compress, encoding, body) => {
   return new Promise(async (resolve, reject) => {
     try {
       let decoded = null
-      switch (encoding) {
+      switch (compress) {
       case 'gzip':
         decoded = await zlib.gunzipAsync(body)
         break
       case 'deflate':
         decoded = await zlib.inflateAsync(body)
         break
+      case 'zip':
+        decoded = await zlib.unzipAsync(body)
+        break
       default:
         decoded = body
       }
-      decoded = decoded.toString()
+      switch (encoding) {
+      case 'base64':
+        decoded = new Buffer(decoded.toString(), 'base64').toString()
+        break
+      default:
+        decoded = decoded.toString()
+      }
       if (decoded.indexOf('svdata=') === 0) {
         decoded = decoded.substring(7)
       }
@@ -39,8 +48,8 @@ const resolveBody = (encoding, body) => {
 
 const resolve = (req) => {
   const host = config.get('proxy.http.host', '127.0.0.1')
-  //const port = config.get('proxy.http.port', 8099)
-  const port = config.get('proxy.http.port', 1080)
+  const port = config.get('proxy.http.port', 8099)
+  //const port = config.get('proxy.http.port', 1080)
   const requirePassword = config.get('proxy.http.requirePassword', false)
   const username = config.get('proxy.http.username', '')
   const password = config.get('proxy.http.password', '')
@@ -101,8 +110,16 @@ class Proxy extends EventEmitter {
             }
           }).pipe(res)
         })
-        let resolvedBody = await resolveBody(response.headers['content-encoding'], body)
-        this.emit('network.on.response', req.method, [domain, pathname, requrl], JSON.stringify(resolvedBody), reqBody, Date.now())
+        let encoding = 'utf-8'
+        if (pathname.startsWith('/api/v1')) {
+          response.headers['content-encoding'] = 'zip'
+          encoding = 'base64'
+        }
+        let resolvedBody = await bodyParse(response.headers['content-encoding'], encoding, body)
+        if (response.statusCode == 200) {
+          this.emit('network.on.response', req.method, [domain, pathname, requrl], JSON.stringify(resolvedBody), reqBody, Date.now())
+        }
+        
         res.end()
       })
     })
@@ -113,8 +130,8 @@ class Proxy extends EventEmitter {
       let remote = null
       const remoteUrl = url.parse(`https://${req.url}`)
       const host = config.get('proxy.http.host', '127.0.0.1')
-      //const port = config.get('proxy.http.port', 8099)
-      const port = config.get('proxy.http.port', 1080)
+      const port = config.get('proxy.http.port', 8099)
+      //const port = config.get('proxy.http.port', 1080)
       let msg = `CONNECT ${remoteUrl.hostname}:${remoteUrl.port} HTTP/${req.httpVersion}\r\n`
       for (const k in req.headers) {
         msg += `${caseNormalizer(k)}: ${req.headers[k]}\r\n`

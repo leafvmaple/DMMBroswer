@@ -9,20 +9,18 @@ const isGameApi = (pathname) =>
   (pathname.startsWith('/api/v1'))
 
 const handleProxyGameOnRequest = (method, [domain, path], body, time) => {
-  console.log('network.on.request')
   const {dispatch} = window
   if (!isGameApi(path)) {
     return
   }
   body = JSON.parse(body)
-  console.log(body)
   const details = {
     method: method,
     path: path,
     body: body,
     time: time,
   }
-  dispatch(onGameRequest(details))
+  //dispatch(onGameRequest(details))
   const event = new CustomEvent('game.request', {
     bubbles: true,
     cancelable: true,
@@ -39,18 +37,15 @@ const responses = []
 let locked = false
 
 const parseResponses = () => {
-  console.log('parseResponses')
   const {dispatch} = window
   let [method, [domain, path, url], body, postBody, time] = responses.shift()
   /*if (['/kcs/mainD2.swf', '/kcsapi/api_start2', '/kcsapi/api_get_member/basic'].includes(path)) {
     handleProxyGameStart()
   }*/
-  console.log(path)
-  console.log(body)
   if (!isGameApi(path)) {
     return
   }
-  
+  console.log(path)
   console.log(body)
   
   /*if (body.api_data) {
@@ -77,7 +72,7 @@ const parseResponses = () => {
   }
 
   // Update redux store
-  dispatch(onGameResponse(details))
+  //dispatch(onGameResponse(details))
   const event = new CustomEvent('game.response', {
     bubbles: true,
     cancelable: true,
@@ -95,7 +90,6 @@ const resolveResponses = () => {
 }
 
 const handleProxyGameOnResponse = (method, [domain, path, url], body, postBody, time) => {
-  console.log('network.on.response')
   responses.push([method, [domain, path, url], JSON.parse(body), JSON.parse(postBody), time])
   if (!locked) {
     resolveResponses()
@@ -103,7 +97,6 @@ const handleProxyGameOnResponse = (method, [domain, path, url], body, postBody, 
 }
 
 const handleGetServer = (server) => {
-  console.log('network.on.server')
   window._serverIp = server.ip
 }
 
