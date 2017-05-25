@@ -1,10 +1,10 @@
 {
   "name": "Flower",
-  "version": "v0.0.1",
+  "version": "v0.0.2",
   "description": "flower the FlowerKnight Browser Tool",
   "main": "index.js",
   "scripts": {
-    "deploy": "gulp deploy",
+    "deploy": "gulp getVersion",
     "electron": "electron .",
     "start": "electron ./app_compiled"
   },
@@ -15,6 +15,7 @@
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-0": "^6.22.0",
     "babel-register": "^6.23.0",
+    "colors": "^1.1.2",
     "coffee-script": "^1.9.3",
     "cson": "^4.0.0",
     "fs-extra": "^2.1.2",
