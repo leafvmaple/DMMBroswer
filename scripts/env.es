@@ -2,8 +2,10 @@ import { remote } from 'electron'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { reducerFactory } from './services/redux'
+import { middleware as promiseActionMiddleware } from './middlewares/promise-action'
 
 const originConfig = remote.require('./lib/config')
+const cachePosition = '_storeCache'
 
 window.$ = (param) => document.querySelector(param)
 //window.ipc = remote.require('./lib/ipc')
@@ -13,7 +15,7 @@ for (const key in originConfig) {
   window.config[key] = originConfig[key]
 }
 
-/*const storeCache = (function() {
+const storeCache = (function() {
   const item = !window.isSafeMode ? localStorage.getItem(cachePosition) : '{}'
   return JSON.parse(item || '{}')
 })()
@@ -29,4 +31,4 @@ export const store = createStore(
     )
   )
 
-window.dispatch = store.dispatch*/
+window.dispatch = store.dispatch

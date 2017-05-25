@@ -48,8 +48,8 @@ const bodyParse = (compress, codepage, body) => {
 
 const resolve = (req) => {
   const host = config.get('proxy.http.host', '127.0.0.1')
-  const port = config.get('proxy.http.port', 8099)
-  //const port = config.get('proxy.http.port', 1080)
+  //const port = config.get('proxy.http.port', 8099)
+  const port = config.get('proxy.http.port', 1080)
   const requirePassword = config.get('proxy.http.requirePassword', false)
   const username = config.get('proxy.http.username', '')
   const password = config.get('proxy.http.password', '')
@@ -129,8 +129,8 @@ class Proxy extends EventEmitter {
       let remote = null
       const remoteUrl = url.parse(`https://${req.url}`)
       const host = config.get('proxy.http.host', '127.0.0.1')
-      const port = config.get('proxy.http.port', 8099)
-      //const port = config.get('proxy.http.port', 1080)
+      //const port = config.get('proxy.http.port', 8099)
+      const port = config.get('proxy.http.port', 1080)
       let msg = `CONNECT ${remoteUrl.hostname}:${remoteUrl.port} HTTP/${req.httpVersion}\r\n`
       for (const k in req.headers) {
         msg += `${caseNormalizer(k)}: ${req.headers[k]}\r\n`
