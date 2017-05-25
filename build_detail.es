@@ -1,8 +1,15 @@
 require('babel-register')(require('./babel.config'))
 const path = require('path-extra')
+const Promise = require('bluebird') 
+const {promisify} = Promise
 const fs = Promise.promisifyAll(require('fs-extra'))
+const request = Promise.promisifyAll(require('request'))
+const requestAsync = promisify(request, {multiArgs: true})
+const unzip = require('node-unzip-2')
 
 const {log} = require('./lib/utils')
+
+const USE_GITHUB_FLASH_MIRROR = false
 
 const BUILD_DIR_NAME = 'build'
 const DOWNLOADDIR_NAME = 'download'
@@ -11,7 +18,7 @@ const getFlashUrl = (platform) =>
   USE_GITHUB_FLASH_MIRROR
   ? `https://github.com/dkwingsmt/PepperFlashFork/releases/download/latest/${platform}.zip`
   : `http://7xj6zx.com1.z0.glb.clouddn.com/poi/PepperFlash/${platform}.zip`
-  
+
 const extractZipNodeAsync = (zipFile, destPath, descript="") => {
   log(`Extract ${descript}`)
   return new Promise((resolve) => {
@@ -87,11 +94,7 @@ const downloadExtractZipAsync = async (url, downloadDir, filename, destPath,
     await extractZipAsync(zipPath, destPath, description)
     } catch (e) {
     log(`Downloading failed, retrying ${url}, reason: ${e}`)
-    try {
-      await fs.removeAsync(zipPath)
-    } catch (e) {
-      console.error(e.stack)
-    }
+    await fs.removeAsync(zipPath)
   }
 }
 

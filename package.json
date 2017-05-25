@@ -1,12 +1,11 @@
 {
-  "name": "Flower",
+  "name": "DMMBroswer",
   "version": "v0.0.2",
   "description": "flower the FlowerKnight Browser Tool",
   "main": "index.js",
   "scripts": {
-    "deploy": "gulp getVersion",
-    "electron": "electron .",
-    "start": "electron ./app_compiled"
+    "deploy": "gulp get_flash",
+    "start": "electron ."
   },
   "dependencies": {
     "babel-core": "^6.23.1",
@@ -30,7 +29,8 @@
   "devDependencies": {
     "electron-builder": "^5.4.3",
     "electron-prebuilt": "^1.2.5",
-    "gulp": "^3.9.0"
+    "gulp": "^3.9.0",
+    "node-unzip-2": "^0.2.1"
   },
   "directories": {
     "app": "app_compiled"
