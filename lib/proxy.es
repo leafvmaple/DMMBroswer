@@ -11,7 +11,7 @@ import config from './config'
 
 const zlib = bluebird.promisifyAll(require('zlib'))
 
-const bodyParse = (compress, encoding, body) => {
+const bodyParse = (compress, codepage, body) => {
   return new Promise(async (resolve, reject) => {
     try {
       let decoded = null
@@ -28,7 +28,7 @@ const bodyParse = (compress, encoding, body) => {
       default:
         decoded = body
       }
-      switch (encoding) {
+      switch (codepage) {
       case 'base64':
         decoded = new Buffer(decoded.toString(), 'base64').toString()
         break
@@ -81,7 +81,6 @@ class Proxy extends EventEmitter {
       req.on ('data', (data) => {
         reqBody = Buffer.concat([reqBody, data])
       })
-      let cacheFile = null
       req.on('end', async () => {
         let domain, pathname, requrl
         let options = {
@@ -110,12 +109,12 @@ class Proxy extends EventEmitter {
             }
           }).pipe(res)
         })
-        let encoding = 'utf-8'
+        let codepage = 'utf-8'
         if (pathname.startsWith('/api/v1')) {
           response.headers['content-encoding'] = 'zip'
-          encoding = 'base64'
+          codepage = 'base64'
         }
-        let resolvedBody = await bodyParse(response.headers['content-encoding'], encoding, body)
+        let resolvedBody = await bodyParse(response.headers['content-encoding'], codepage, body)
         if (response.statusCode == 200) {
           this.emit('network.on.response', req.method, [domain, pathname, requrl], JSON.stringify(resolvedBody), reqBody, Date.now())
         }
