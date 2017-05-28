@@ -1,9 +1,9 @@
 import { app } from 'electron'
 import path from 'path-extra'
 import fs from 'fs-extra'
+import { warn } from './utils'
 const { ROOT } = global
 
-// Specify flash path, supposing it is placed in the same directory with main.js.
 let pluginName, folderName
 switch (process.platform) {
 case 'win32':
@@ -24,11 +24,8 @@ const flashPaths = [
   path.join(ROOT, 'PepperFlash', folderName, pluginName),
 ]
 
-try {
-  const path = app.getPath('pepperFlashSystemPlugin')
-  flashPaths.unshift(path)
-} catch (e) {
-}
+const pluginPath = app.getPath('pepperFlashSystemPlugin')
+flashPaths.unshift(pluginPath)
 
 for (const flashPath of flashPaths) {
   try {
@@ -36,5 +33,6 @@ for (const flashPath of flashPaths) {
     app.commandLine.appendSwitch('ppapi-flash-path', flashPath)
     break
   } catch (e) {
+    warn(`Flash in ${flashPath} not found.`)
   }
 }

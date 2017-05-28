@@ -8,6 +8,9 @@ const {ROOT, EXROOT} = global
 const defaultConfigPath = path.join(ROOT, 'config.cson')
 const configPath = path.join(EXROOT, 'config.cson')
 
+console.log(ROOT)
+console.log(EXROOT)
+
 class configClass extends EventEmitter {
   constructor () {
     super()

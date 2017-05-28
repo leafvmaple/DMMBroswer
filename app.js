@@ -1,10 +1,10 @@
 const {app, BrowserWindow, ipcMain, Tray, nativeImage, shell} = require('electron')
 const path = require('path-extra')
 
-global.POI_VERSION = app.getVersion()
+global.DMM_VERSION = app.getVersion()
 global.ROOT = __dirname
 global.EXECROOT = path.join(process.execPath, '..')
-global.APPDATA_PATH = path.join(app.getPath('appData'), 'Flower')
+global.APPDATA_PATH = path.join(app.getPath('appData'), 'Dmm')
 global.EXROOT = global.APPDATA_PATH
 global.DEFAULT_CACHE_PATH = path.join(global.EXROOT, 'MyCache')
 global.MODULE_PATH = path.join(global.ROOT, "node_modules")
@@ -64,7 +64,7 @@ app.on('ready', () => {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-  
+
   if (process.platform === 'win32' || process.platform === 'linux') {
     global.appIcon = appIcon = new Tray(iconPath)
     appIcon.on('click', () => {

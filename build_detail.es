@@ -1,10 +1,11 @@
 require('babel-register')(require('./babel.config'))
 const path = require('path-extra')
-const Promise = require('bluebird') 
+const Promise = require('bluebird')
 const {promisify} = Promise
 const fs = Promise.promisifyAll(require('fs-extra'))
 const request = Promise.promisifyAll(require('request'))
 const requestAsync = promisify(request, {multiArgs: true})
+const child_process = require('child_process')
 const unzip = require('node-unzip-2')
 
 const {log} = require('./lib/utils')

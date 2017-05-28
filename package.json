@@ -1,12 +1,21 @@
 {
   "name": "DMMBroswer",
   "version": "v0.0.2",
-  "description": "flower the FlowerKnight Browser Tool",
+  "description": "DMM Browser Tool",
   "main": "index.js",
   "scripts": {
     "deploy": "gulp get_flash",
     "start": "electron ."
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leafvmaple/FlowerKnightBroswer.git"
+  },
+  "author": {
+    "name": "Leaf Maple",
+    "email": "leafvmaple@gmail.com"
+  },
+  "license": "MIT",
   "dependencies": {
     "babel-core": "^6.23.1",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -27,9 +36,9 @@
     "request": "^2.74.0"
   },
   "devDependencies": {
-    "electron-builder": "^5.4.3",
-    "electron-prebuilt": "^1.2.5",
-    "gulp": "^3.9.0",
+    "electron": "~1.6.7",
+    "electron-builder": "^16.6.1",
+    "gulp": "^3.9.1",
     "node-unzip-2": "^0.2.1"
   },
   "directories": {
