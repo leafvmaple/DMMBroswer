@@ -24,8 +24,11 @@ const flashPaths = [
   path.join(ROOT, 'PepperFlash', folderName, pluginName),
 ]
 
-const pluginPath = app.getPath('pepperFlashSystemPlugin')
-flashPaths.unshift(pluginPath)
+try {
+  const path = app.getPath('pepperFlashSystemPlugin')
+  flashPaths.unshift(path)
+} catch (e) {
+}
 
 for (const flashPath of flashPaths) {
   try {
