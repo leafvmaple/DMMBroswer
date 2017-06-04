@@ -53,4 +53,5 @@ remote.getCurrentWebContents().on('dom-ready', () => {
   })
 })
 
-require('./services/listener')
+require('./createstore')
+require('./services/proxylistener')

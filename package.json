@@ -1,6 +1,6 @@
 {
   "name": "DMMBroswer",
-  "version": "v0.0.2",
+  "version": "v0.0.3",
   "description": "DMM Browser Tool",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "header-case-normalizer": "^1.0.3",
     "lodash": "^4.14.1",
     "path-extra": "4.1.0",
+    "reduce-reducers": "^0.1.2",
     "redux": "^3.6.0",
     "redux-observers": "^2.0.1",
     "redux-thunk": "^2.1.0",

@@ -1,5 +1,5 @@
-import { onGameRequest, onGameResponse } from './redux'
 import { remote } from 'electron'
+import { onGameRequest, onGameResponse } from 'scripts/redux'
 
 const proxy = remote.require('./lib/proxy')
 
@@ -20,7 +20,7 @@ const handleProxyGameOnRequest = (method, [domain, path], body, time) => {
     body: body,
     time: time,
   }
-  //dispatch(onGameRequest(details))
+  dispatch(onGameRequest(details))
   const event = new CustomEvent('game.request', {
     bubbles: true,
     cancelable: true,
@@ -72,7 +72,7 @@ const parseResponses = () => {
   }
 
   // Update redux store
-  //dispatch(onGameResponse(details))
+  dispatch(onGameResponse(details))
   const event = new CustomEvent('game.response', {
     bubbles: true,
     cancelable: true,
