@@ -1,16 +1,18 @@
 const {app, BrowserWindow, ipcMain, Tray, nativeImage, shell} = require('electron')
 const path = require('path-extra')
 
-global.DMM_VERSION = app.getVersion()
 global.ROOT = __dirname
+global.DMM_VERSION = app.getVersion()
 global.EXECROOT = path.join(process.execPath, '..')
-global.APPDATA_PATH = path.join(app.getPath('appData'), 'Dmm')
+global.APPDATA_PATH = path.join(app.getPath('appData'), 'DMM')
+global.WEBROOT = path.join(global.ROOT, '..')
 global.EXROOT = global.APPDATA_PATH
 global.DEFAULT_CACHE_PATH = path.join(global.EXROOT, 'MyCache')
-global.MODULE_PATH = path.join(global.ROOT, "node_modules")
+global.MODULE_PATH = path.join(global.WEBROOT, "node_modules")
 
 const config = require('./lib/config')
-const proxy = require('./lib/proxy')
+const proxy = require('./lib/config')
+
 const iconPath = path.join(ROOT, 'assets', 'icons', 'flower.jpg')
 
 proxy.setMaxListeners(30)
@@ -21,11 +23,11 @@ if (config.get('flower.disableHA', false)) {
 
 require('./lib/flash')
 
-global.mainWindow = mainWindow = null
-
 app.on ('window-all-closed', () => {
   app.quit()
 })
+
+global.mainWindow = mainWindow = null
 
 app.on('ready', () => {
   const {screen} = require('electron')
@@ -57,7 +59,7 @@ app.on('ready', () => {
     alwaysOnTop: config.get('flower.content.alwaysOnTop', false),
     titleBarStyle: 'hidden',
   })
-  mainWindow.loadURL(`file://${__dirname}/index.html`)
+  mainWindow.loadURL(`file://${WEBROOT}/index.html`)
   mainWindow.webContents.on('will-navigate', (e) => {
     e.preventDefault()
   })

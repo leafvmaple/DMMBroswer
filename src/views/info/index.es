@@ -7,6 +7,9 @@ import {reducer as teams} from './teams'
 
 export const reducer = reduceReducers(
   (state, action) => {
+    if (action.type === '@@Response/api/v1/user/login') {
+      return pick(state, ['user'])
+    }
     return state
   },
   combineReducers({

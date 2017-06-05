@@ -1,7 +1,7 @@
 import { remote } from 'electron'
 import { onGameRequest, onGameResponse } from 'scripts/redux'
 
-const proxy = remote.require('./lib/proxy')
+const proxy = remote.require('./src/lib/proxy')
 
 window.listenerFlag = false
 

@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <title>Flower</title>
-  <link rel="stylesheet" href="./assets/css/app.css">
-  <link rel="stylesheet" id="layout-css" href="./assets/css/layout.horizontal.css">
+  <link rel="stylesheet" href="./src/assets/css/app.css">
+  <link rel="stylesheet" id="layout-css" href="./src/assets/css/layout.horizontal.css">
   <script>
     require('coffee-script/register');
     require('babel-register')(require('./babel.config'));
-    require('./scripts/env');
+    require('./src/scripts/env');
   </script>
 </head>
 <body>
@@ -16,7 +16,7 @@
     <dmm-game>
       <div class="dmm-game-warpper">
         <div id="webview-wrapper" style="height: 480px">
-          <webview src="about:blank" ondrop="event.preventDefault();" plugins disablewebsecurity preload="./assets/js/webview-preload.js"></webview>
+          <webview src="about:blank" ondrop="event.preventDefault();" plugins disablewebsecurity preload="./src/assets/js/webview-preload.js"></webview>
         </div>
         <hr>
         <flower-info>
@@ -36,7 +36,7 @@
     </flower-app>
   </flower-main>
   <script>
-    require('./scripts/services');
+    require('./src/scripts/services');
   </script>
 </body>
 </html>

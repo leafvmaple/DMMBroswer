@@ -2,7 +2,7 @@ require('coffee-script/register')
 require('babel-register')(require('./babel.config'))
 const gulp = require('gulp')
 
-const {log} = require('./lib/utils')
+const {log} = require('./src/lib/utils')
 const {installThemeAsync, getFlashAsync} = require('./build_detail')
 
 const package_json = require('./package.json')
