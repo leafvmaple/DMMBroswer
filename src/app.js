@@ -11,7 +11,7 @@ global.DEFAULT_CACHE_PATH = path.join(global.EXROOT, 'MyCache')
 global.MODULE_PATH = path.join(global.WEBROOT, "node_modules")
 
 const config = require('./lib/config')
-const proxy = require('./lib/config')
+const proxy = require('./lib/proxy')
 
 const iconPath = path.join(ROOT, 'assets', 'icons', 'flower.jpg')
 
@@ -23,11 +23,11 @@ if (config.get('flower.disableHA', false)) {
 
 require('./lib/flash')
 
+global.mainWindow = mainWindow = null
+
 app.on ('window-all-closed', () => {
   app.quit()
 })
-
-global.mainWindow = mainWindow = null
 
 app.on('ready', () => {
   const {screen} = require('electron')
