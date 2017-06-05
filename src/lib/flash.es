@@ -20,8 +20,8 @@ case 'linux':
   break
 }
 const flashPaths = [
-  path.join(ROOT, '..', 'PepperFlash', folderName, pluginName),
-  path.join(ROOT, 'PepperFlash', folderName, pluginName),
+  path.join(ROOT, '..', 'pepper_flash', folderName, pluginName),
+  path.join(ROOT, 'pepper_flash', folderName, pluginName),
 ]
 
 try {

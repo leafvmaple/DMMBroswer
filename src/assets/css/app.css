@@ -57,7 +57,7 @@ body {
   overflow: auto;
   margin-bottom: 15px;
 }
-#flower-app-container {
+#dmm-app-container {
   overflow: hidden;
 }
 dmm-game webview {
@@ -66,20 +66,20 @@ dmm-game webview {
 dmm-game .dmm-game-warpper {
   overflow: hidden;
 }
-dmm-game flower-alert {
+dmm-game dmm-alert {
   width: 0;
 }
-dmm-game flower-info .alert {
+dmm-game dmm-info .alert {
   opacity: 0.7;
   padding: 6px 3px 5px 3px;
   margin-bottom: 0px;
   height: 100%;
 }
-dmm-game flower-map-reminder {
+dmm-game dmm-map-reminder {
   position: relative;
   width: 135px;
 }
-dmm-game flower-map-reminder .progress {
+dmm-game dmm-map-reminder .progress {
   position: absolute;
   width: 100%;
   height: 3px;
@@ -104,10 +104,10 @@ hr {
   margin-top: 5px;
   margin-bottom: 5px;
 }
-flower-app {
+dmm-app {
   position: relative;
 }
-flower-app .container {
+dmm-app .container {
   padding-left: 0px;
   padding-right: 0px;
   width: auto;
@@ -116,7 +116,7 @@ flower-app .container {
 table {
   table-layout: fixed;
 }
-flower-app flower-nav-tabs .nav {
+dmm-app dmm-nav-tabs .nav {
   display: flex;
 }
 #top-nav {
@@ -128,28 +128,28 @@ flower-app flower-nav-tabs .nav {
 #top-nav > li.dropdown, #top-nav > li.tab-narrow{
   width:11%;
 }
-flower-app flower-nav-tabs .nav li {
+dmm-app dmm-nav-tabs .nav li {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-flower-app flower-nav-tabs .nav  li a {
+dmm-app dmm-nav-tabs .nav  li a {
   text-align: center;
 }
-flower-app flower-nav-tabs .nav .dropdown-menu {
+dmm-app dmm-nav-tabs .nav .dropdown-menu {
   min-width: 100%;
   overflow: auto;
 }
-flower-app flower-nav-tabs .nav .dropdown {
+dmm-app dmm-nav-tabs .nav .dropdown {
   overflow: inherit;
 }
-flower-nav .grid-menu ul[aria-labelledby=plugin-dropdown] li {
+dmm-nav .grid-menu ul[aria-labelledby=plugin-dropdown] li {
   display: block;
   float: left;
   width: calc(100% / 3);
 }
-flower-nav .grid-menu ul[aria-labelledby=plugin-dropdown] li a {
+dmm-nav .grid-menu ul[aria-labelledby=plugin-dropdown] li a {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -158,48 +158,48 @@ flower-nav .grid-menu ul[aria-labelledby=plugin-dropdown] li a {
   height: 5em;
   padding-top: 1em;
 }
-flower-nav .grid-menu ul[aria-labelledby=plugin-dropdown] li .fa {
+dmm-nav .grid-menu ul[aria-labelledby=plugin-dropdown] li .fa {
   display: block;
   font-size: 175%;
 }
-flower-info {
+dmm-info {
   display: flex;
   align-items: stretch;
 }
-flower-alert {
+dmm-alert {
   flex: 1;
 }
-flower-control {
+dmm-control {
   height: 100%;
 }
-flower-control .btn-sm {
+dmm-control .btn-sm {
   border-radius: 0px;
   border-width: 2px;
   padding: 2px 7px;
   font-size: 15px;
   height: 30px;
 }
-flower-control button .fa {
+dmm-control button .fa {
   cursor: flowernter !important;
   width: 20px;
 }
-flower-control .flower-control-container {
+dmm-control .dmm-control-container {
   display: flex;
   flex-direction: row;
 }
-flower-control .flower-control-extender {
+dmm-control .dmm-control-extender {
   white-space: nowrap;
   overflow: hidden;
   transition: 0.3s;
   display: block;
 }
-flower-control .collapse {
+dmm-control .collapse {
   width: 0px;
 }
-flower-control .collapse.in {
+dmm-control .collapse.in {
   width: auto;
 }
-flower-control .collapsing {
+dmm-control .collapsing {
   width: auto;
 }
 .table tbody tr td {
@@ -208,17 +208,17 @@ flower-control .collapsing {
 .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
   outline: none !important;
 }
-.flower-tabs-container {
+.dmm-tabs-container {
   display: flex;
 }
-.flower-tabs-container > div {
+.dmm-tabs-container > div {
   flex: 1;
 }
-.flower-tab-contents {
+.dmm-tab-contents {
   display: -webkit-box;
   position: relative;
 }
-.flower-tab-child-sizer {
+.dmm-tab-child-sizer {
   left: 0;
   top: 0;
   width: 100%;
@@ -226,19 +226,19 @@ flower-control .collapsing {
   padding: 0;
   overflow: hidden;
 }
-.flower-tab-child-positioner {
+.dmm-tab-child-positioner {
   position: relative;
   width: 100%;
   opacity: 1;
 }
-.flower-tab-child-positioner-transition {
+.dmm-tab-child-positioner-transition {
   transition: .35s ease-in-out;
 }
-.flower-app-tabpane {
+.dmm-app-tabpane {
   width: 100%;
   overflow-y: scroll;
 }
-.flower-plugin {
+.dmm-plugin {
   left: 100%;
 }
 .hidden-left {
@@ -253,50 +253,50 @@ flower-control .collapsing {
   display: flex;
   flex-flow: column;
 }
-.flower-ship-cond-0.dark {  /* cond 0~19  */
+.dmm-ship-cond-0.dark {  /* cond 0~19  */
   color: #DD514C;
   font-weight: bold;
 }
-.flower-ship-cond-20.dark { /* cond 20~29 */
+.dmm-ship-cond-20.dark { /* cond 20~29 */
   color: #F37B1D;
 }
-.flower-ship-cond-30.dark { /* cond 30~39 */
+.dmm-ship-cond-30.dark { /* cond 30~39 */
   color: #FFC880;
 }
-.flower-ship-cond-40.dark { /* cond 40~48 */
+.dmm-ship-cond-40.dark { /* cond 40~48 */
 
 }
-.flower-ship-cond-49.dark { /* cond 49 */
+.dmm-ship-cond-49.dark { /* cond 49 */
 
 }
-.flower-ship-cond-50.dark { /* cond 50~52 */
+.dmm-ship-cond-50.dark { /* cond 50~52 */
   color: #FFEE00
 }
-.flower-ship-cond-53.dark { /* cond 53~100 */
+.dmm-ship-cond-53.dark { /* cond 53~100 */
   color: #FFFF40;
   font-weight: bold;
 }
 
-.flower-ship-cond-0.light {  /* cond 0~19  */
+.dmm-ship-cond-0.light {  /* cond 0~19  */
   text-shadow: 0 0 3px #DD514C;
   font-weight: bold;
 }
-.flower-ship-cond-20.light { /* cond 20~29 */
+.dmm-ship-cond-20.light { /* cond 20~29 */
   text-shadow: 0 0 3px #F37B1D;
 }
-.flower-ship-cond-30.light { /* cond 30~39 */
+.dmm-ship-cond-30.light { /* cond 30~39 */
   text-shadow: 0 0 3px #FFC880;
 }
-.flower-ship-cond-40.light { /* cond 40~48 */
+.dmm-ship-cond-40.light { /* cond 40~48 */
 
 }
-.flower-ship-cond-49.light { /* cond 49 */
+.dmm-ship-cond-49.light { /* cond 49 */
 
 }
-.flower-ship-cond-50.light { /* cond 50~52 */
+.dmm-ship-cond-50.light { /* cond 50~52 */
   text-shadow: 0 0 3px #FFEE00;
 }
-.flower-ship-cond-53.light { /* cond 53~100 */
+.dmm-ship-cond-53.light { /* cond 53~100 */
   text-shadow: 0 0 3px #FFFF00;
   font-weight: bold;
 }
@@ -347,8 +347,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
   opacity: 0;
 }
 div[role='tooltip'],
-#flower-app-container,
-flower-info {
+#dmm-app-container,
+dmm-info {
   transform-origin: 0 0;
 }
 

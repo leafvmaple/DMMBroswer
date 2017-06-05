@@ -2,6 +2,7 @@ import { remote } from 'electron'
 import path from 'path-extra'
 
 window.ROOT = path.join(__dirname, '..')
+window.WEBROOT = path.join(window.ROOT, '..')
 window.$ = (param) => document.querySelector(param)
 //window.ipc = remote.require('./lib/ipc')
 //window.proxy = remote.require('./lib/proxy')
@@ -14,3 +15,5 @@ for (const key in originConfig) {
 }
 
 require('module').globalPaths.push(window.ROOT)
+
+require('./env/i18n')

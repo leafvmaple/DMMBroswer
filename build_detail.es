@@ -8,7 +8,7 @@ const requestAsync = promisify(request, {multiArgs: true})
 const child_process = require('child_process')
 const unzip = require('node-unzip-2')
 
-const {log} = require('./lib/utils')
+const {log} = require('./src/lib/utils')
 
 const USE_GITHUB_FLASH_MIRROR = false
 
@@ -108,7 +108,7 @@ export const getFlashAsync = async (dmmVersion) => {
   const BUILD_ROOT = path.join(__dirname, BUILD_DIR_NAME)
   const downloadDir = path.join(BUILD_ROOT, DOWNLOADDIR_NAME)
   const platform = `${process.platform}-${process.arch}`
-  await fs.removeAsync(path.join(__dirname, 'PepperFlash'))
-  const flashDir = path.join(__dirname, 'PepperFlash', PLATFORM_TO_PATHS[platform])
+  await fs.removeAsync(path.join(__dirname, 'pepper_flash'))
+  const flashDir = path.join(__dirname, 'pepper_flash', PLATFORM_TO_PATHS[platform])
   await installFlashAsync(platform, downloadDir, flashDir)
 }

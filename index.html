@@ -12,30 +12,31 @@
   </script>
 </head>
 <body>
-  <flower-main>
+  <dmm-main>
     <dmm-game>
       <div class="dmm-game-warpper">
         <div id="webview-wrapper" style="height: 480px">
           <webview src="about:blank" ondrop="event.preventDefault();" plugins disablewebsecurity preload="./src/assets/js/webview-preload.js"></webview>
         </div>
         <hr>
-        <flower-info>
-          <flower-control></flower-control>
-          <flower-alert></flower-alert>
-          <flower-map-reminder></flower-map-reminder>
-        </flower-info>
+        <dmm-info>
+          <dmm-control></dmm-control>
+          <dmm-alert></dmm-alert>
+          <dmm-map-reminder></dmm-map-reminder>
+        </dmm-info>
         <hr>
       </div>
     </dmm-game>
-    <flower-app>
-      <div id='flower-app-container'>
-        <flower-nav>
-          <flower-nav-tabs />
-        </flower-nav>
+    <dmm-app>
+      <div id='dmm-app-container'>
+        <dmm-nav>
+          <dmm-nav-tabs />
+        </dmm-nav>
       </div>
-    </flower-app>
-  </flower-main>
+    </dmm-app>
+  </dmm-main>
   <script>
+    require('./src/scripts/render');
     require('./src/scripts/services');
   </script>
 </body>
