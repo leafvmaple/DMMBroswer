@@ -1,6 +1,11 @@
 import { remote } from 'electron'
 import path from 'path-extra'
 
+Object.clone = (obj) =>
+  JSON.parse(JSON.stringify(obj))
+//Object.remoteClone = (obj) =>
+//  JSON.parse(window.remote.require('./src/lib/config').remoteStringify(obj))
+
 window.ROOT = path.join(__dirname, '..')
 window.WEBROOT = path.join(window.ROOT, '..')
 window.$ = (param) => document.querySelector(param)

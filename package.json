@@ -29,6 +29,7 @@
     "cson": "^4.0.0",
     "fs-extra": "^2.1.2",
     "header-case-normalizer": "^1.0.3",
+    "i18n-2": "^0.6.3",
     "lodash": "^4.14.1",
     "path-extra": "4.1.0",
     "prop-types": "^15.5.8",

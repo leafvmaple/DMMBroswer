@@ -2,10 +2,14 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import React, { Component, Children, PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import FontAwesome from 'react-fontawesome'
 import { get } from 'lodash'
 import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 
 import mainview from 'components/main'
+import settings from 'components/settings'
+
+const {i18n, dbg, dispatch, config} = window
 
 const TabContentsUnion = connect(
   (state) => ({
@@ -19,6 +23,10 @@ const TabContentsUnion = connect(
     enableTransition: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
     activeTab: PropTypes.string.isRequired,
+  }
+  findChildByKey = (children, key) => {
+    return Children.map(children,
+      (child) => child.key === key ? child : null).filter(Boolean)[0]
   }
   activeKey = () => {
     return this.props.activeTab || (this.props.children[0] || {}).key
@@ -59,27 +67,62 @@ const TabContentsUnion = connect(
 
 export default connect(
   (state) => ({
-    plugins: state.plugins,
     doubleTabbed: get(state.config, 'dmm.tabarea.double', false),
     useGridMenu: get(state.config, 'dmm.tabarea.grid', navigator.maxTouchPoints !== 0),
     activeMainTab: get(state.ui, 'activeMainTab', 'mainView'),
-    activePluginName: get(state.ui, 'activePluginName', ''),
   }),
   undefined,
   undefined,
   {pure: true}
 )(class ControlledTabArea extends PureComponent {
+  static propTypes = {
+    doubleTabbed: PropTypes.bool.isRequired,
+    useGridMenu: PropTypes.bool.isRequired,
+    activeMainTab: PropTypes.string.isRequired,
+  }
+  dispatchTabChangeEvent = (tabInfo) =>
+    dispatch({
+      type: '@@TabSwitch',
+      tabInfo,
+    })
+  selectTab = (key) => {
+    if (key == null)
+      return
+    let tabInfo = {}
+    const mainTabKeyUnion = this.props.doubleTabbed ? this.refs.mainTabKeyUnion : this.refs.tabKeyUnion
+    const mainTabInstance = mainTabKeyUnion.getWrappedInstance()
+    if (mainTabInstance.findChildByKey(mainTabInstance.props.children, key)) {
+      tabInfo = {
+        ...tabInfo,
+        activeMainTab: key,
+      }
+    }
+    this.dispatchTabChangeEvent(tabInfo)
+  }
+  handleSelectTab = (key) => {
+    this.selectTab(key)
+  }
   render() {
+    const navClass = classNames({
+      'grid-menu': this.props.useGridMenu,
+    })
     return !this.props.doubleTabbed ? (
       <div>
-        <Nav bsStyle="tabs" activeKey={this.props.activeMainTab} id="top-nav" className="main">
+        <Nav bsStyle="tabs" activeKey={this.props.activeMainTab} id="top-nav" className={navClass}
+          onSelect={this.handleSelectTab}>
           <NavItem key='mainView' eventKey='mainView'>
             {mainview.displayName}
           </NavItem>
+          <NavItem key='settings' eventKey='settings'>
+            {settings.displayName}
+          </NavItem>
         </Nav>
         <TabContentsUnion ref='tabKeyUnion' activeTab={this.props.activeMainTab}>
-          <div id={mainview.name} className="poi-app-tabpane" key='mainView'>
+          <div id={mainview.name} className="dmm-app-tabpane" key='mainView'>
             <mainview.reactClass />
+          </div>
+          <div id={settings.name} className="dmm-app-tabpane" key='settings'>
+            <settings.reactClass />
           </div>
         </TabContentsUnion>
       </div>
@@ -90,12 +133,18 @@ export default connect(
             <NavItem key='mainView' eventKey='mainView'>
               {mainview.displayName}
             </NavItem>
+            <NavItem key='settings' eventKey='settings'>
+              {settings.displayName}
+            </NavItem>
           </Nav>
           <TabContentsUnion ref='tabKeyUnion'
             ref='mainTabKeyUnion'
             activeTab={this.props.activeMainTab}>
             <div id={mainview.name} className="dmm-app-tabpane" key='mainView'>
               <mainview.reactClass activeMainTab={this.props.activeMainTab} />
+            </div>
+            <div id={settings.name} className="dmm-app-tabpane" key='settings'>
+              <settings.reactClass activeMainTab={this.props.activeMainTab}/>
             </div>
           </TabContentsUnion>
         </div>

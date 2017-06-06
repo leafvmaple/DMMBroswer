@@ -3,11 +3,13 @@ import { combineReducers } from 'redux'
 
 import { reducer as info } from 'views/info'
 import { reducer as battle } from 'views/battle'
+import { reducer as ui} from 'views/ui'
 
 export function reducerFactory(extensionConfig) {
   return combineReducers({
     info,
     battle,
+    ui,
   })
 }
 
