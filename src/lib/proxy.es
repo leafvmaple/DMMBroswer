@@ -47,17 +47,40 @@ const bodyParse = (compress, codepage, body) => {
 }
 
 const resolve = (req) => {
-  const host = config.get('proxy.http.host', '127.0.0.1')
-  //const port = config.get('proxy.http.port', 8099)
-  const port = config.get('proxy.http.port', 1080)
-  const requirePassword = config.get('proxy.http.requirePassword', false)
-  const username = config.get('proxy.http.username', '')
-  const password = config.get('proxy.http.password', '')
-  const useAuth = (requirePassword && username !== '' && password !== '')
-  const strAuth = `${username}:${password}@`
-  return Object.assign(req, {
-    proxy: `http://${useAuth ? strAuth : ''}${host}:${port}`,
-  })
+  switch (config.get('proxy.use')) {
+  case 'socks5':
+    return Object.assign(req, {
+      agentClass: SocksHttpAgent,
+      agentOptions: {
+        socksHost: config.get('proxy.socks5.host', '127.0.0.1'),
+        socksPort: config.get('proxy.socks5.port', 1080),
+      },
+    })
+  case 'http': {
+    const host = config.get('proxy.http.host', '127.0.0.1')
+    const port = config.get('proxy.http.port', 8099)
+    const requirePassword = config.get('proxy.http.requirePassword', false)
+    const username = config.get('proxy.http.username', '')
+    const password = config.get('proxy.http.password', '')
+    const useAuth = (requirePassword && username !== '' && password !== '')
+    const strAuth = `${username}:${password}@`
+    return Object.assign(req, {
+      proxy: `http://${useAuth ? strAuth : ''}${host}:${port}`,
+    })
+  }
+  // PAC
+  case 'pac': {
+    const uri = config.get('proxy.pacAddr')
+    if (!PacAgents[uri]) {
+      PacAgents[uri] = new PacProxyAgent(uri)
+    }
+    return Object.assign(req, {
+      agent: PacAgents[uri],
+    })
+  }
+  default:
+    return req
+  }
 }
 
 class Proxy extends EventEmitter {
@@ -126,22 +149,54 @@ class Proxy extends EventEmitter {
       delete req.headers['proxy-connection']
       // Disable HTTP Keep-Alive
       req.headers['connection'] = 'close'
-      let remote = null
       const remoteUrl = url.parse(`https://${req.url}`)
-      const host = config.get('proxy.http.host', '127.0.0.1')
-      //const port = config.get('proxy.http.port', 8099)
-      const port = config.get('proxy.http.port', 1080)
-      let msg = `CONNECT ${remoteUrl.hostname}:${remoteUrl.port} HTTP/${req.httpVersion}\r\n`
-      for (const k in req.headers) {
-        msg += `${caseNormalizer(k)}: ${req.headers[k]}\r\n`
+      let remote = null
+      switch (config.get('proxy.use')) {
+      case 'socks5': {
+        remote = socks.createConnection({
+          socksHost: config.get('proxy.socks5.host', '127.0.0.1'),
+          socksPort: config.get('proxy.socks5.port', 1080),
+          host: remoteUrl.hostname,
+          port: remoteUrl.port,
+        })
+        remote.on ('connect', () => {
+          client.write("HTTP/1.1 200 Connection Established\r\nConnection: close\r\n\r\n")
+          remote.write(head)
+        })
+        client.on('data', (data) => {
+          remote.write(data)
+        })
+        remote.on('data', (data) => {
+          client.write(data)
+        })
+        break
       }
-      msg += "\r\n"
-      remote = net.connect(port, host, () => {
-        remote.write(msg)
-        remote.write(head)
-        client.pipe(remote)
-        remote.pipe(client)
-      })
+      case 'http': {
+        const host = config.get('proxy.http.host', '127.0.0.1')
+        const port = config.get('proxy.http.port', 8118)
+        let msg = `CONNECT ${remoteUrl.hostname}:${remoteUrl.port} HTTP/${req.httpVersion}\r\n`
+        for (const k in req.headers) {
+          msg += `${caseNormalizer(k)}: ${req.headers[k]}\r\n`
+        }
+        msg += "\r\n"
+        remote = net.connect(port, host, () => {
+          remote.write(msg)
+          remote.write(head)
+          client.pipe(remote)
+          remote.pipe(client)
+        })
+        break
+      }
+      default: {
+        // Connect to remote directly
+        remote = net.connect(remoteUrl.port, remoteUrl.hostname, () => {
+          client.write("HTTP/1.1 200 Connection Established\r\nConnection: close\r\n\r\n")
+          remote.write(head)
+          client.pipe(remote)
+          remote.pipe(client)
+        })
+      }
+      }
       client.on('end', () => {
         remote.end()
       })

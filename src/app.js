@@ -4,7 +4,7 @@ const path = require('path-extra')
 global.ROOT = __dirname
 global.DMM_VERSION = app.getVersion()
 global.EXECROOT = path.join(process.execPath, '..')
-global.APPDATA_PATH = path.join(app.getPath('appData'), 'DMM')
+global.APPDATA_PATH = path.join(app.getPath('appData'), 'DMMBroswer')
 global.WEBROOT = path.join(global.ROOT, '..')
 global.EXROOT = global.APPDATA_PATH
 global.DEFAULT_CACHE_PATH = path.join(global.EXROOT, 'MyCache')
@@ -17,7 +17,7 @@ const iconPath = path.join(ROOT, 'assets', 'icons', 'flower.jpg')
 
 proxy.setMaxListeners(30)
 
-if (config.get('flower.disableHA', false)) {
+if (config.get('dmm.disableHA', false)) {
   app.disableHardwareAcceleration()
 }
 
@@ -32,7 +32,7 @@ app.on ('window-all-closed', () => {
 app.on('ready', () => {
   const {screen} = require('electron')
   const {workArea} = screen.getPrimaryDisplay()
-  let {x, y, width, height} = config.get('flower.window', workArea)
+  let {x, y, width, height} = config.get('dmm.window', workArea)
   const validate = (n, min, range) => (n != null && n >= min && n < min + range)
   const withinDisplay = (d) => {
     const wa = d.workArea
@@ -53,10 +53,10 @@ app.on('ready', () => {
     y: y,
     width: width,
     height: height,
-    title: 'Flower',
+    title: 'DMM Broswer',
     icon: iconPath,
-    resizable: config.get('flower.content.resizeable', true),
-    alwaysOnTop: config.get('flower.content.alwaysOnTop', false),
+    resizable: config.get('dmm.content.resizeable', true),
+    alwaysOnTop: config.get('dmm.content.alwaysOnTop', false),
     titleBarStyle: 'hidden',
   })
   mainWindow.loadURL(`file://${WEBROOT}/index.html`)
