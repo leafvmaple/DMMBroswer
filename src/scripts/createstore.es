@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { middleware as promiseActionMiddleware } from './middlewares/promise'
 import { remote } from 'electron'
-import { reducerFactory } from './redux'
+import { reducerFactory, onConfigChange } from './redux'
 
 const cachePosition = '_storeCache'
 const storeCache = (function() {

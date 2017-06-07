@@ -5,14 +5,22 @@ import { createSelector } from 'reselect'
 import { get, map } from 'lodash'
 import { configSelector, basicSelector } from 'scripts/utils/selectors'
 
+const { i18n } = window
+const __ = i18n.main.__.bind(i18n.main)
+
 export default connect(
   (state) => ({
+    level: get(state.info.basic, 'levelId', 0),
+    levelExperience: get(state.info.basic, 'levelExperience', 0),
+    curCharacter: Object.keys(state.info.characters).length,
+    maxCharacter: get(state.info.basic, 'maxCharacterBox', 0),
+    curEquipment: Object.keys(state.info.equips).length,
+    maxEquipment: get(state.info.basic, 'maxCharacterEquipmentBox', 0),
+    battlePoint: get(state.info.basic, 'battlePoint', 0),
   })
-)(function TeitokuPanel({}) {
-  const level = 5
+)(function TeitokuPanel({level, levelExperience, curCharacter, maxCharacter, curEquipment, maxEquipment, battlePoint}) {
   const nickname = '花骑士'
-  const rankName = '大神'
-  const rank = 35
+  const rankName = '花神'
   return (
     <Panel bsStyle="default" className="teitoku-panel">
     {
@@ -21,16 +29,16 @@ export default connect(
         <OverlayTrigger placement="bottom" overlay={<Tooltip id="teitoku-exp" className='info-tooltip'></Tooltip>}>
           <span>{`Lv. ${level}　`}
             <span className="nickname">{nickname}</span>
-            <span id="user-rank">{`　[${rankName[rank]}]　`}</span>
+            <span id="user-rank">{`　[${rankName}]　`}</span>
           </span>
         </OverlayTrigger>
-        <span>{'Ships: '}</span>
-        <span className=''>{0} / {0}</span>
-        <span style={{marginLeft: '1em'}}>{'Equip.: '}</span>
-        <span className=''>{0} / {0}</span>
+        <span>{__('Flower: ')}</span>
+        <span className=''>{curCharacter} / {maxCharacter}</span>
+        <span style={{marginLeft: '1em'}}>{__('Equip.: ')}</span>
+        <span className=''>{curEquipment} / {maxEquipment}</span>
       </div>
     :
-      <div>{`${'Garden [Not logged in]'}　${"Ships: "}：? / ?　${"Equip.: "}：? / ?`}</div>
+      <div>{`${__('Garden [Not logged in]')}　${__("Ships: ")}：? / ?　${__("Equip.: ")}：? / ?`}</div>
     }
     </Panel>
   )

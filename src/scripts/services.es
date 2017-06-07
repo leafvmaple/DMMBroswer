@@ -10,10 +10,14 @@ window.addEventListener('game.request', (e) => {
 window.addEventListener('game.response', (e) => {
   const {method, body, postBody, time} = e.detail
   const resPath = e.detail.path
-  if (config.get('poi.showNetworkLog', true)) {
+  if (config.get('dmm.showNetworkLog', true)) {
     //console.log(`${__('Hit')} ${method} ${resPath}`, {dontReserve: true})
   }
 })
+
+window.onbeforeunload = (e) => {
+  remote.require('./src/lib/window').saveConfig()
+}
 
 remote.getCurrentWebContents().on('dom-ready', () => {
   if (config.get('flower.content.muted', false)) {

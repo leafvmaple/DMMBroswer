@@ -70,7 +70,7 @@ export function buildArray(pairsOrIdx, _value) {
   return ret
 }
 
-export function indexify(array, key='api_id') {
+export function indexify(array, key='id') {
   return keyBy(array, key)
 }
 
