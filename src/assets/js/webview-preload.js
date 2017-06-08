@@ -10,7 +10,7 @@ window.onclick = (e) => {
 const alignCSS = document.createElement('style')
 
 window.align = async function () {
-  let zoom = await new Promise((resolve, reject) => {
+  /*let zoom = await new Promise((resolve, reject) => {
     remote.getCurrentWindow().webContents.executeJavaScript("$('webview').getBoundingClientRect().width", (result) => {
       resolve(result)
     })
@@ -19,7 +19,7 @@ window.align = async function () {
   webFrame.setLayoutZoomLevelLimits(-999999, 999999)
   webFrame.setZoomFactor(zoom)
   const zl = webFrame.getZoomLevel()
-  webFrame.setLayoutZoomLevelLimits(zl, zl)
+  webFrame.setLayoutZoomLevelLimits(zl, zl)*/
   window.scrollTo(0, 0)
   
   alignCSS.innerHTML =
