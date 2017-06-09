@@ -53,7 +53,7 @@ app.on('ready', () => {
     y: y,
     width: width,
     height: height,
-    title: 'DMM Broswer',
+    title: 'DMM',
     icon: iconPath,
     resizable: config.get('dmm.content.resizeable', true),
     alwaysOnTop: config.get('dmm.content.alwaysOnTop', false),

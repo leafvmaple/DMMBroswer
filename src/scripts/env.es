@@ -22,3 +22,4 @@ for (const key in originConfig) {
 require('module').globalPaths.push(window.ROOT)
 
 require('./env/i18n')
+require('./env/theme')

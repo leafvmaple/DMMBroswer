@@ -3,7 +3,7 @@ require('babel-register')(require('./babel.config'))
 const gulp = require('gulp')
 
 const {log} = require('./src/lib/utils')
-const {installThemeAsync, getFlashAsync} = require('./build_detail')
+const {getThemeAsync, getFlashAsync} = require('./build_detail')
 
 const package_json = require('./package.json')
 
@@ -16,7 +16,7 @@ gulp.task('getVersion', () => {
 })
 
 gulp.task ('deploy', ['getVersion', 'get_flash'], async() => {
-  await installThemeAsync(dmmVersion)
+  await getThemeAsync(dmmVersion)
 })
 
 gulp.task('get_flash', ['getVersion'], async() => {

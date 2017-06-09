@@ -19,18 +19,13 @@ export default connect(
     battlePoint: get(state.info.basic, 'battlePoint', 0),
   })
 )(function TeitokuPanel({level, levelExperience, curCharacter, maxCharacter, curEquipment, maxEquipment, battlePoint}) {
-  const nickname = '花骑士'
-  const rankName = '花神'
   return (
     <Panel bsStyle="default" className="teitoku-panel">
     {
       level >= 0 ?
       <div>
         <OverlayTrigger placement="bottom" overlay={<Tooltip id="teitoku-exp" className='info-tooltip'></Tooltip>}>
-          <span>{`Lv. ${level}　`}
-            <span className="nickname">{nickname}</span>
-            <span id="user-rank">{`　[${rankName}]　`}</span>
-          </span>
+          <span>{`Lv. ${level}　`}</span>
         </OverlayTrigger>
         <span>{__('Flower: ')}</span>
         <span className=''>{curCharacter} / {maxCharacter}</span>
@@ -38,7 +33,7 @@ export default connect(
         <span className=''>{curEquipment} / {maxEquipment}</span>
       </div>
     :
-      <div>{`${__('Garden [Not logged in]')}　${__("Ships: ")}：? / ?　${__("Equip.: ")}：? / ?`}</div>
+      <div>{`${__('Garden [Not logged in]')}　${__("Flower: ")}：? / ?　${__("Equip.: ")}：? / ?`}</div>
     }
     </Panel>
   )

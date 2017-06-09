@@ -4,7 +4,7 @@
   "description": "DMM Browser Tool",
   "main": "index.js",
   "scripts": {
-    "deploy": "gulp get_flash",
+    "deploy": "gulp deploy",
     "start": "electron ."
   },
   "repository": {
@@ -23,6 +23,7 @@
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-0": "^6.22.0",
     "babel-register": "^6.23.0",
+    "bootstrap": "^3.3.7",
     "classnames": "^2.2.3",
     "colors": "^1.1.2",
     "coffee-script": "^1.9.3",

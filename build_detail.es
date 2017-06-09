@@ -19,6 +19,11 @@ const getFlashUrl = (platform) =>
   USE_GITHUB_FLASH_MIRROR
   ? `https://github.com/dkwingsmt/PepperFlashFork/releases/download/latest/${platform}.zip`
   : `http://7xj6zx.com1.z0.glb.clouddn.com/poi/PepperFlash/${platform}.zip`
+  
+const THEME_LIST = {
+  darkly:     'https://bootswatch.com/darkly/bootstrap.css',
+  paperdark:  'https://raw.githubusercontent.com/ruiii/poi_theme_paper_dark/master/paperdark.css',
+}
 
 const extractZipNodeAsync = (zipFile, destPath, descript="") => {
   log(`Extract ${descript}`)
@@ -53,6 +58,17 @@ const extractZipCliAsync = (zipFile, destPath, descript="") => {
   })
 }
 
+const downloadThemesAsync = (themeRoot) =>
+  Promise.all((() => {
+    const jobs = []
+    for (const theme of Object.keys(THEME_LIST)){
+      const themeUrl = THEME_LIST[theme]
+      const downloadDir = path.join(themeRoot, theme, 'css')
+      jobs.push(downloadAsync(themeUrl, downloadDir,`${theme}.css`, `${theme} theme`))
+    }
+    return jobs
+  })())
+
 const downloadAsync = async (url, destDir, filename = path.basename(url), description) => {
   log(`Downloading ${description} from ${url}`)
   await fs.ensureDirAsync(destDir)
@@ -66,7 +82,7 @@ const downloadAsync = async (url, destDir, filename = path.basename(url), descri
       encoding: null,
     })
     if (response.statusCode != 200) {
-      throw new Error(`Response status code ${response.statusCode}`)
+      log(`Response status code ${response.statusCode}`)
     }
     await fs.writeFileAsync(destPath, body)
     log(`Successfully downloaded to ${destPath}`)
@@ -104,6 +120,10 @@ const installFlashAsync = async (platform, downloadDir, flashDir) => {
   await downloadExtractZipAsync(flash_url, downloadDir, `flash-${platform}.zip`, flashDir, 'flash plugin')
 }
 
+const installThemeAsync = async (themeDir) => {
+  await downloadThemesAsync(themeDir)
+}
+
 export const getFlashAsync = async (dmmVersion) => {
   const BUILD_ROOT = path.join(__dirname, BUILD_DIR_NAME)
   const downloadDir = path.join(BUILD_ROOT, DOWNLOADDIR_NAME)
@@ -111,4 +131,9 @@ export const getFlashAsync = async (dmmVersion) => {
   await fs.removeAsync(path.join(__dirname, 'pepper_flash'))
   const flashDir = path.join(__dirname, 'pepper_flash', PLATFORM_TO_PATHS[platform])
   await installFlashAsync(platform, downloadDir, flashDir)
+}
+
+export const getThemeAsync = async (dmmVersion) => {
+  const themeDir = path.join(__dirname, 'src', 'assets', 'themes')
+  await installThemeAsync(themeDir)
 }

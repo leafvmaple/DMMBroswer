@@ -1,2 +1,4 @@
+/build
 /node_modules
-/PepperFlash
+/pepper_flash
+/src/assets/themes
