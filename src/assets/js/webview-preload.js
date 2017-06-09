@@ -49,8 +49,17 @@ window.align = async function () {
   `
 }
 
+window.sendinput = async function () {
+  const mouseclick = () => {
+    remote.getCurrentWebContents().sendInputEvent({type: 'mouseDown', x: 855, y: 545, button: 'left', clickCount: 1})
+    remote.getCurrentWebContents().sendInputEvent({type: 'mouseUp', x: 855, y: 545, button: 'left', clickCount: 1})
+  }
+  window.setInterval(mouseclick, 100)
+}
+
 const handleDOMContentLoaded = () => {
   window.align()
+  //window.sendinput()
   document.querySelector('body').appendChild(alignCSS)
   document.removeEventListener("DOMContentLoaded", handleDOMContentLoaded)
 }

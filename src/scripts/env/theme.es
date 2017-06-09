@@ -16,7 +16,7 @@ window.loadTheme = (th) => {
   else {
     $('#bootstrap-css').setAttribute('href', `file://${ROOT}/assets/themes/${theme}/css/${theme}.css`)
   }
-  window.reloadCustomCss()
+  //window.reloadCustomCss()
 }
 
 window.applyTheme = (th) => {
