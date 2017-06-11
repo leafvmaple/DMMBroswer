@@ -5,6 +5,8 @@ import http from 'http'
 import url from 'url'
 import net from 'net'
 import request from 'request'
+import socks from 'socks5-client'
+import SocksHttpAgent from 'socks5-http-client/lib/Agent'
 import querystring from 'querystring'
 import caseNormalizer from 'header-case-normalizer'
 import config from './config'
@@ -68,7 +70,6 @@ const resolve = (req) => {
       proxy: `http://${useAuth ? strAuth : ''}${host}:${port}`,
     })
   }
-  // PAC
   case 'pac': {
     const uri = config.get('proxy.pacAddr')
     if (!PacAgents[uri]) {
@@ -147,7 +148,6 @@ class Proxy extends EventEmitter {
     })
     this.server.on('connect', (req, client, head) => {
       delete req.headers['proxy-connection']
-      // Disable HTTP Keep-Alive
       req.headers['connection'] = 'close'
       const remoteUrl = url.parse(`https://${req.url}`)
       let remote = null
@@ -188,7 +188,6 @@ class Proxy extends EventEmitter {
         break
       }
       default: {
-        // Connect to remote directly
         remote = net.connect(remoteUrl.port, remoteUrl.hostname, () => {
           client.write("HTTP/1.1 200 Connection Established\r\nConnection: close\r\n\r\n")
           remote.write(head)
@@ -220,7 +219,6 @@ class Proxy extends EventEmitter {
     })
     const listenPort = config.get('proxy.port', 0)
     this.server.listen(listenPort, '127.0.0.1', () => {
-      console.log(this.server.address().port)
       this.port = this.server.address().port
       app.commandLine.appendSwitch('proxy-server', `127.0.0.1:${this.port}`)
       app.commandLine.appendSwitch('ignore-certificate-errors')
