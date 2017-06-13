@@ -5,6 +5,8 @@ import { get, pick } from 'lodash'
 import {reducer as basic} from './basic'
 import {reducer as characters} from './characters'
 import {reducer as equips} from './equips'
+import {reducer as friends} from './friends'
+import {reducer as raids} from './raids'
 
 export const reducer = reduceReducers(
   (state, action) => {
@@ -14,5 +16,7 @@ export const reducer = reduceReducers(
     basic,
     characters,
     equips,
+    friends,
+    raids,
   }),
 )

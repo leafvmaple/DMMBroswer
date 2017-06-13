@@ -8,6 +8,7 @@ import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 
 import mainview from 'components/main'
 import settings from 'components/settings'
+import characters from 'components/characters'
 
 const {i18n, dbg, dispatch, config} = window
 
@@ -113,6 +114,9 @@ export default connect(
           <NavItem key='mainView' eventKey='mainView'>
             {mainview.displayName}
           </NavItem>
+          <NavItem key='characters' eventKey='characters'>
+            {characters.displayName}
+          </NavItem>
           <NavItem key='settings' eventKey='settings'>
             {settings.displayName}
           </NavItem>
@@ -120,6 +124,9 @@ export default connect(
         <TabContentsUnion ref='tabKeyUnion' activeTab={this.props.activeMainTab}>
           <div id={mainview.name} className="dmm-app-tabpane" key='mainView'>
             <mainview.reactClass />
+          </div>
+          <div id={characters.name} className="dmm-app-tabpane" key='characters'>
+            <characters.reactClass />
           </div>
           <div id={settings.name} className="dmm-app-tabpane" key='settings'>
             <settings.reactClass />
@@ -133,6 +140,9 @@ export default connect(
             <NavItem key='mainView' eventKey='mainView'>
               {mainview.displayName}
             </NavItem>
+            <NavItem key='characters' eventKey='characters'>
+              {characters.displayName}
+            </NavItem>
             <NavItem key='settings' eventKey='settings'>
               {settings.displayName}
             </NavItem>
@@ -142,6 +152,9 @@ export default connect(
             activeTab={this.props.activeMainTab}>
             <div id={mainview.name} className="dmm-app-tabpane" key='mainView'>
               <mainview.reactClass activeMainTab={this.props.activeMainTab} />
+            </div>
+            <div id={characters.name} className="dmm-app-tabpane" key='characters'>
+              <characters.reactClass />
             </div>
             <div id={settings.name} className="dmm-app-tabpane" key='settings'>
               <settings.reactClass activeMainTab={this.props.activeMainTab}/>

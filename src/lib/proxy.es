@@ -37,13 +37,10 @@ const bodyParse = (compress, codepage, body) => {
       default:
         decoded = decoded.toString()
       }
-      if (decoded.indexOf('svdata=') === 0) {
-        decoded = decoded.substring(7)
-      }
       decoded = JSON.parse(decoded)
       resolve(decoded)
     } catch (e) {
-      reject(e)
+      //reject(e)
     }
   })
 }
