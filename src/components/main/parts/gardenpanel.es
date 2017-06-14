@@ -12,7 +12,7 @@ export default connect(
   (state) => ({
     level: get(state.info.basic, 'levelId', 0),
     levelExperience: get(state.info.basic, 'levelExperience', 0),
-    curCharacter: Object.keys(state.info.characters).length,
+    curCharacter: get(state.info.characters.count, '0', 0),
     maxCharacter: get(state.info.basic, 'maxCharacterBox', 0),
     curEquipment: Object.keys(state.info.equips).length,
     maxEquipment: get(state.info.basic, 'maxCharacterEquipmentBox', 0),

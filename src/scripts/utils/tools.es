@@ -2,7 +2,7 @@
  * This file contains utility functions that is unrelated to the game mechanism.
  */
 
-import { isEqual, forEach, keyBy, zip, unzip, sum } from 'lodash'
+import { isEqual, forEach, keyBy, zip, unzip, sum, countBy } from 'lodash'
 
 // For a given array, sum up each position of the subarray respectively.
 // Args:
@@ -72,6 +72,10 @@ export function buildArray(pairsOrIdx, _value) {
 
 export function indexify(array, key='id') {
   return keyBy(array, key)
+}
+
+export function countOf(array, key='id') {
+  return countBy(array, key)
 }
 
 export function copyIfSame(obj, to) {

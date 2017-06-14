@@ -8,7 +8,7 @@ import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 
 import mainview from 'components/main'
 import settings from 'components/settings'
-import characters from 'components/characters'
+import party from 'components/party'
 
 const {i18n, dbg, dispatch, config} = window
 
@@ -114,8 +114,8 @@ export default connect(
           <NavItem key='mainView' eventKey='mainView'>
             {mainview.displayName}
           </NavItem>
-          <NavItem key='characters' eventKey='characters'>
-            {characters.displayName}
+          <NavItem key='party' eventKey='party'>
+            {party.displayName}
           </NavItem>
           <NavItem key='settings' eventKey='settings'>
             {settings.displayName}
@@ -125,8 +125,8 @@ export default connect(
           <div id={mainview.name} className="dmm-app-tabpane" key='mainView'>
             <mainview.reactClass />
           </div>
-          <div id={characters.name} className="dmm-app-tabpane" key='characters'>
-            <characters.reactClass />
+          <div id={party.name} className="dmm-app-tabpane" key='party'>
+            <party.reactClass />
           </div>
           <div id={settings.name} className="dmm-app-tabpane" key='settings'>
             <settings.reactClass />
@@ -140,8 +140,8 @@ export default connect(
             <NavItem key='mainView' eventKey='mainView'>
               {mainview.displayName}
             </NavItem>
-            <NavItem key='characters' eventKey='characters'>
-              {characters.displayName}
+            <NavItem key='party' eventKey='party'>
+              {party.displayName}
             </NavItem>
             <NavItem key='settings' eventKey='settings'>
               {settings.displayName}
@@ -153,8 +153,8 @@ export default connect(
             <div id={mainview.name} className="dmm-app-tabpane" key='mainView'>
               <mainview.reactClass activeMainTab={this.props.activeMainTab} />
             </div>
-            <div id={characters.name} className="dmm-app-tabpane" key='characters'>
-              <characters.reactClass />
+            <div id={party.name} className="dmm-app-tabpane" key='party'>
+              <party.reactClass />
             </div>
             <div id={settings.name} className="dmm-app-tabpane" key='settings'>
               <settings.reactClass activeMainTab={this.props.activeMainTab}/>
