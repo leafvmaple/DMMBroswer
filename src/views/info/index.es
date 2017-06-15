@@ -7,6 +7,7 @@ import {reducer as characters} from './characters'
 import {reducer as equips} from './equips'
 import {reducer as friends} from './friends'
 import {reducer as raids} from './raids'
+import {reducer as parties} from './parties'
 
 export const reducer = reduceReducers(
   (state, action) => {
@@ -18,5 +19,6 @@ export const reducer = reduceReducers(
     equips,
     friends,
     raids,
+    parties,
   }),
 )

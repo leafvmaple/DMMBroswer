@@ -14,6 +14,13 @@ import { TopAlert, Characters } from './parts'
 const {i18n} = window
 const __ = i18n.setting.__.bind(i18n.setting)
 
+function getStyle(state, disabled) {
+  if (state >= 0 && state <= 5 && !disabled)
+    return ['success', 'warning', 'danger', 'info', 'primary', 'default'][state]
+  else
+    return 'default'
+}
+
 /*const charactersViewSwitchButtonDataSelectorFactory = memoize((Id) =>
   createSelector([
     fleetNameSelectorFactory(fleetId),
@@ -45,9 +52,12 @@ const PartyViewSwitchButton = connect(
     partyId: partyId,
     //shipViewSwitchButtonDataSelectorFactory(partyId)(state)
   })
-)(({partyId}) =>
+)(({partyId, activePartyId, onClick, disabled}) =>
   <Button
     bsSize="small"
+    bsStyle='default'
+    onClick={onClick}
+    disabled={disabled}
   >
     {defaultPartyNames[partyId]}
   </Button>
@@ -56,16 +66,30 @@ const PartyViewSwitchButton = connect(
 const PartyCharactersView = connect(
   (state, {partyId}) => ({
     partyId: partyId,
+    characters: get(state.info.parties, ['1', partyId + 1]),
   })
-)(({partyId}) =>
-  <div>
-    <div className='fleet-name'>
+)(({partyId, characters}) => {
+  console.log(partyId)
+  console.log(characters)
+  return <div>
+    <div className='character-name'>
       <TopAlert
         partyId={partyId}
         isMini={false}
       />
     </div>
+    <div className="character-details">
+    {
+      (characters || []).map((character, i) => 
+        <ShipRow
+          key={character.userCharacterId}
+          characterId={character.userCharacterId}
+          />
+      )
+    }
+    </div>
   </div>
+}
 )
 
 const PartyView = connect((state, props) => ({
@@ -78,6 +102,11 @@ const PartyView = connect((state, props) => ({
     enableTransition: PropTypes.bool.isRequired,
     partyCount: PropTypes.number.isRequired,
     activePartyId: PropTypes.number.isRequired,
+  }
+  
+  constructor(props) {
+    super(props)
+    this.nowTime = 0
   }
   
   handleClick = (idx) => {
@@ -110,7 +139,7 @@ const PartyView = connect((state, props) => ({
             times(4).map(i =>
               <PartyViewSwitchButton
                 key={i}
-                fleetId={i}
+                partyId={i}
                 disabled={i + 1 > this.props.partyCount}
                 onClick={e => this.handleClick(i)}
                 activePartyId={this.props.activePartyId}
@@ -118,6 +147,19 @@ const PartyView = connect((state, props) => ({
             )
           }
           </ButtonGroup>
+        </div>
+        <div className="no-scroll">
+          <div
+            className={classNames("character-tab-content", {'character-tab-content-transition': this.props.enableTransition})}
+            style={{transform: `translateX(-${this.props.activePartyId}00%)`}}>
+          {
+            times(4).map(i =>
+              <div className="character-deck" key={i}>
+                <PartyCharactersView partyId={i} />
+              </div>
+            )
+          }
+          </div>
         </div>
       </Panel>
     )

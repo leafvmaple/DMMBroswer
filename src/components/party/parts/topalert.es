@@ -3,6 +3,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Alert, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
+const {ROOT, i18n} = window
+const __ = i18n.main.__.bind(i18n.main)
+
 const getFontStyle = () => {
   if (window.isDarkTheme) {
     return {color: '#FFF'}
@@ -13,9 +16,9 @@ const getFontStyle = () => {
 
 export default connect(
   (state, {partyId}) => {
-    partyId: partyId
+    
   }
-)(function TopAlert(partyId) {
+)(function TopAlert({partyId, isMini}) {
   return (
     <div style={{width: '100%'}}>
     {
