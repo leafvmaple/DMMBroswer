@@ -45,6 +45,9 @@ remote.getCurrentWebContents().on('dom-ready', () => {
       $('dmm-game webview').executeJavaScript('DMM.netgame.reloadDialog=function(){}')
     }
   })
+  $('dmm-game webview').addEventListener('console-message', (e) => {
+    console.log(e.message)
+  })
   $('dmm-game webview').addEventListener('new-window', (e) => {
     const exWindow = WindowManager.createWindow({
       realClose: true,

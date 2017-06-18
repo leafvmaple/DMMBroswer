@@ -10,7 +10,7 @@ window.onclick = (e) => {
 const alignCSS = document.createElement('style')
 
 window.align = async function () {
-  /*let zoom = await new Promise((resolve, reject) => {
+  let zoom = await new Promise((resolve, reject) => {
     remote.getCurrentWindow().webContents.executeJavaScript("$('webview').getBoundingClientRect().width", (result) => {
       resolve(result)
     })
@@ -19,7 +19,7 @@ window.align = async function () {
   webFrame.setLayoutZoomLevelLimits(-999999, 999999)
   webFrame.setZoomFactor(zoom)
   const zl = webFrame.getZoomLevel()
-  webFrame.setLayoutZoomLevelLimits(zl, zl)*/
+  webFrame.setLayoutZoomLevelLimits(zl, zl)
   window.scrollTo(0, 0)
   
   alignCSS.innerHTML =
@@ -49,19 +49,40 @@ window.align = async function () {
   `
 }
 
-window.sendinput = async function () {
+let intervalHandle = null
+window.click = (e) => {
   const mouseclick = () => {
-    remote.getCurrentWebContents().sendInputEvent({type: 'mouseDown', x: 855, y: 545, button: 'left', clickCount: 1})
-    remote.getCurrentWebContents().sendInputEvent({type: 'mouseUp', x: 855, y: 545, button: 'left', clickCount: 1})
+    const zoom = webFrame.getZoomFactor()
+    const x = parseInt(855 * zoom)
+    const y = parseInt(545 * zoom)
+    remote.getCurrentWebContents().sendInputEvent({
+      type: 'mouseDown',
+      x: x,
+      y: y,
+      button: 'left',
+      clickCount: 1,
+    })
+    remote.getCurrentWebContents().sendInputEvent({
+      type: 'mouseUp',
+      x: x,
+      y: y,
+      button: 'left',
+      clickCount: 1
+    })
   }
-  window.setInterval(mouseclick, 100)
+  intervalHandle = window.setInterval(mouseclick, 100)
+}
+window.unclick = () => {
+  if (intervalHandle) {
+    window.clearInterval(intervalHandle)
+  }
 }
 
 const handleDOMContentLoaded = () => {
   window.align()
-  //window.sendinput()
   document.querySelector('body').appendChild(alignCSS)
   document.removeEventListener("DOMContentLoaded", handleDOMContentLoaded)
 }
 
 document.addEventListener("DOMContentLoaded", handleDOMContentLoaded)
+

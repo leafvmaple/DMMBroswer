@@ -66,7 +66,7 @@ app.on('ready', () => {
   mainWindow.webContents.on('will-navigate', (e) => {
     e.preventDefault()
   })
-  mainWindow.on('closed', () => {
+  mainWindow.on('closed', () => { 
     mainWindow = null
   })
 

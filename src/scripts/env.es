@@ -8,6 +8,7 @@ Object.clone = (obj) =>
 
 window.ROOT = path.join(__dirname, '..')
 window.WEBROOT = path.join(window.ROOT, '..')
+window.DMM_VERSION = remote.getGlobal('DMM_VERSION')
 window.$ = (param) => document.querySelector(param)
 //window.ipc = remote.require('./lib/ipc')
 //window.proxy = remote.require('./lib/proxy')
