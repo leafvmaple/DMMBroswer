@@ -15,9 +15,9 @@ const getFontStyle = () => {
 }
 
 export default connect(
-  (state, {partyId}) => {
-    
-  }
+  (state, {partyId}) => ({
+    partyId: partyId,
+  })
 )(function TopAlert({partyId, isMini}) {
   return (
     <div style={{width: '100%'}}>

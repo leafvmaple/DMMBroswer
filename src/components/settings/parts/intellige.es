@@ -28,7 +28,6 @@ const IntelligeConfig = connect(() => (
   constructor(props) {
     super(props)
     this.state = Object.clone(props)
-    console.log(this.state)
     //battleClick(this.state.battle)
   }
   handleSaveConfig = (e) => {
