@@ -2,6 +2,10 @@ import { connect } from 'react-redux'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Alert, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import memoize from 'fast-memoize'
+import { createSelector } from 'reselect'
+
+import { partyCharactersDataSelectorFactory } from 'scripts/utils/selectors'
 
 const {ROOT, i18n} = window
 const __ = i18n.main.__.bind(i18n.main)
@@ -14,11 +18,25 @@ const getFontStyle = () => {
   }
 }
 
-export default connect(
-  (state, {partyId}) => ({
+const topAlertSelectorFactory = memoize((partyId) =>
+  createSelector([
+    partyCharactersDataSelectorFactory(partyId),
+  ], (charactersData) => ({
     partyId: partyId,
+    charactersData,
+  }))
+)
+
+export default connect(
+  (state, {partyId}) => 
+    topAlertSelectorFactory(partyId)(state)
+)(function TopAlert({partyId, charactersData=[], isMini}) {
+  let totalLv = 0
+  charactersData.forEach((character) => {
+    if (character) {
+      totalLv += character.characterLevelNum
+    }
   })
-)(function TopAlert({partyId, isMini}) {
   return (
     <div style={{width: '100%'}}>
     {
@@ -32,7 +50,7 @@ export default connect(
       <Alert style={getFontStyle()}>
         <div style={{display: "flex"}}>
           <span style={{flex: "1"}}>{'None'} </span>
-          <span style={{flex: 1}}>{__('Total Lv')}. {'None'}</span>
+          <span style={{flex: 1}}>{__('Total Lv')}. {totalLv}</span>
           <span style={{flex: 1}}>
             <OverlayTrigger placement='bottom' overlay={
               <Tooltip id={`topalert-FP-fleet-${partyId}`}>

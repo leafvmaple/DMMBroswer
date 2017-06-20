@@ -68,28 +68,15 @@ const PartyCharactersView = connect(
     partyId: partyId,
     characters: get(state.info.parties, ['1', partyId + 1]),
   })
-)(({partyId, characters}) => {
-  console.log(partyId)
-  console.log(characters)
-  return <div>
-    <div className='character-name'>
+)(({partyId, characters}) => 
+  <div>
+    <div className='party-name'>
       <TopAlert
         partyId={partyId}
         isMini={false}
       />
     </div>
-    <div className="character-details">
-    {
-      (characters || []).map((character, i) => 
-        <ShipRow
-          key={character.userCharacterId}
-          characterId={character.userCharacterId}
-          />
-      )
-    }
-    </div>
   </div>
-}
 )
 
 const PartyView = connect((state, props) => ({

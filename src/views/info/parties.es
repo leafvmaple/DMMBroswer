@@ -7,7 +7,7 @@ export function reducer(state={}, {type, body, postBody}) {
     for(var key in partySet) {
       partySet[key] = assemble(partySet[key], 'rowNum')
     }
-    compareUpdate(state, partySet)
+    return compareUpdate(state, partySet)
   }
   }
   return state

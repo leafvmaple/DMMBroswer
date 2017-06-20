@@ -28,6 +28,7 @@
     "colors": "^1.1.2",
     "coffee-script": "^1.9.3",
     "cson": "^4.0.0",
+    "fast-memoize": "^2.0.2",
     "fs-extra": "^2.1.2",
     "header-case-normalizer": "^1.0.3",
     "i18n-2": "^0.6.3",
