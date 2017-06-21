@@ -9,7 +9,9 @@ import FontAwesome from 'react-fontawesome'
 import { get, memoize, times } from 'lodash'
 import { createSelector } from 'reselect'
 
-import { TopAlert, Characters } from './parts'
+import { TopAlert, Character } from './parts'
+
+import { partyCharactersIdSelectorFactory } from 'scripts/utils/selectors'
 
 const {i18n} = window
 const __ = i18n.setting.__.bind(i18n.setting)
@@ -63,18 +65,33 @@ const PartyViewSwitchButton = connect(
   </Button>
 )
 
+const partyCharacterViewDataSelectorFactory = memoize((partyId) =>
+  createSelector([
+    partyCharactersIdSelectorFactory(partyId),
+  ], (charactersId) => ({
+    charactersId,
+  }))
+)
 const PartyCharactersView = connect(
-  (state, {partyId}) => ({
-    partyId: partyId,
-    characters: get(state.info.parties, ['1', partyId + 1]),
-  })
-)(({partyId, characters}) => 
+  (state, {partyId}) => 
+    partyCharacterViewDataSelectorFactory(partyId)(state)
+)(({partyId, charactersId}) => 
   <div>
     <div className='party-name'>
       <TopAlert
         partyId={partyId}
         isMini={false}
       />
+    </div>
+    <div className="character-details">
+    {
+      (charactersId || []).map((characterId, i) =>
+        <Character
+          key={characterId}
+          characterId={characterId}
+          />
+      )
+    }
     </div>
   </div>
 )
@@ -119,7 +136,7 @@ const PartyView = connect((state, props) => ({
   render() {
     return (
       <Panel onDoubleClick={this.changeMainView}>
-      <link rel="stylesheet" href={join(__dirname, 'assets', 'party.css')} />
+      <link rel="stylesheet" href={join(global.ROOT, 'assets', 'css', 'party.css')} />
         <div className="div-row">
           <ButtonGroup className="party-name-button">
           {

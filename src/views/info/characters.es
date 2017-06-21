@@ -6,7 +6,7 @@ export function reducer(state={}, {type, body, postBody}) {
     const bodyCharacters = indexify(body.userCharacterList)
     const bodyCount = countOf(body.userCharacterList, 'storageId')
     Object.assign(bodyCharacters, {
-      count:bodyCount,
+      count: bodyCount,
     })
     return pickExisting(compareUpdate(state, bodyCharacters), bodyCharacters)
   }

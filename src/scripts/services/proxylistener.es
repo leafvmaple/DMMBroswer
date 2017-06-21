@@ -1,12 +1,15 @@
 import { remote } from 'electron'
 import { onGameRequest, onGameResponse } from 'scripts/redux'
+import paths from 'path-extra'
+import fs from 'fs-extra'
+import CSON from 'cson'
 
 const proxy = remote.require('./src/lib/proxy')
 
 window.listenerFlag = false
 
 const isGameApi = (pathname) =>
-  (pathname.startsWith('/api/v1'))
+  (pathname.startsWith('/api/v1') || pathname.startsWith('/social/rpc'))
 
 const handleProxyGameOnRequest = (method, [domain, path], body, time) => {
   const {dispatch} = window
@@ -47,6 +50,8 @@ const parseResponses = () => {
   }
   console.log(path)
   console.log(body)
+  //const outPath = path.replace(/\//g, '-')
+  //fs.writeFileSync(paths.join(__dirname, outPath), CSON.stringify(body, null, 2))
   
   /*if (body.api_data) {
     body = body.api_data

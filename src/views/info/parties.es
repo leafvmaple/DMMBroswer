@@ -7,6 +7,9 @@ export function reducer(state={}, {type, body, postBody}) {
     for(var key in partySet) {
       partySet[key] = assemble(partySet[key], 'rowNum')
     }
+    Object.assign(partySet, {
+      setId: body.user.activeCharacterPartySetNum,
+    })
     return compareUpdate(state, partySet)
   }
   }

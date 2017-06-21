@@ -27,14 +27,15 @@ export const stateSelector = (state) => state
 
 export const basicSelector = (state) => state.info.basic
 export const charactersSelector = (state) => state.info.characters
+export const equipsSelector = (state) => state.info.equips
 export const configSelector = (state) => state.config
 
-export const formSelectorFactory = memoize((formId) =>
-  (state) => (state.info.parties || [])[formId]
+export const formSelectorFactory = memoize(() =>
+  (state) => (state.info.parties || [])[state.info.parties.setId || 1]
 )
 
 export const partySelectorFactory = memoize((partyId) =>
-  createSelector(formSelectorFactory(1), (form) => (form || [])[partyId + 1])
+  createSelector(formSelectorFactory(), (form) => (form || [])[partyId + 1])
 )
 
 export const partyCharactersIdSelectorFactory = memoize((partyId) =>
@@ -49,7 +50,7 @@ export const characterInPartySelectorFactory = memoize((charaterId) =>
   createSelector(charactersSelector, (charactersStatus) => charactersStatus[charaterId])
 )
 
-const characterDataSelectorFactory = memoize((characterId) =>
+export const characterDataSelectorFactory = memoize((characterId) =>
   createSelector([
     charactersSelector,
   ], (characters) => 
@@ -67,4 +68,14 @@ export const partyCharactersDataSelectorFactory = memoize((partyId) =>
     !partyCharactersId ? undefined :
     partyCharactersId.map((characterId) => characterDataSelectorFactory(characterId)(state))
   ))
+)
+
+export const characterEquipDataSelectorFactory = memoize((characterId) =>
+  createSelector([
+    equipsSelector,
+  ], (equips) =>
+    equips && typeof characterId === 'number' && characterId
+    ? map(equips[characterId], (equip) => equip)
+    : undefined
+  )
 )
