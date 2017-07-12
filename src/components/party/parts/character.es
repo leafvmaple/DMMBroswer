@@ -30,7 +30,6 @@ export const Character = connect(
 
   render() {
     const {characterId, character} = this.props
-    //console.log(character)
     return (
       <div className="character-item">
         <div className="character-tile">
@@ -48,7 +47,7 @@ export const Character = connect(
                 </span>
               </div>
               <span className="character-name">
-                {'花骑士'}
+                {character.characterId}
               </span>
               <span className="character-exp">
                 Next. {character.characterLevelExperience || 0}

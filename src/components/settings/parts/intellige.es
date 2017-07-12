@@ -3,7 +3,6 @@ import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 import React from 'react'
 import { get } from 'lodash'
-import { ipcMain } from 'electron'
 import { battleClick } from 'lib/event'
 
 const {config, i18n, toggleModal} = window
@@ -16,19 +15,28 @@ const basic = {
 
 const IntelligeConfig = connect(() => (
   (state, props) => {
-  	const ret = get(state, 'config.intellige') || {}
+    const ret = {
+      state: get(state, 'config.intellige') || {}
+    }
     for (const key of Object.keys(basic)) {
-      if (ret[key] === undefined) {
-        ret[key] = basic[key]
+      if (ret.state[key] === undefined) {
+        ret.state[key] = basic[key]
       }
+    }
+    ret.status = {
+      battle: get(state, 'battle.started') || false
     }
     return ret
   }
 ))(class IntelligeConfig extends Component {
   constructor(props) {
     super(props)
-    this.state = Object.clone(props)
-    //battleClick(this.state.battle)
+    this.state = Object.clone(props.state)
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.status.battle != this.props.status.battle) {
+      battleClick(this.state.battle && nextProps.status.battle)
+    }
   }
   handleSaveConfig = (e) => {
     const intellige = Object.clone(this.state)
@@ -36,12 +44,12 @@ const IntelligeConfig = connect(() => (
     //toggleModal(__('Proxy setting'), __('Success! It will be available after a restart.'))
   }
   handleSetBattle = (e) => {
+    const intelligeBattle = !this.state.battle
     this.setState({
-      battle: !this.state.battle,
+      battle: intelligeBattle,
     })
-    config.set('intellige.battle', !this.state.battle)
-    battleClick(!this.state.battle)
-    //ipcMain.send('MouseClick', !this.state.battle)
+    config.set('intellige.battle', intelligeBattle)
+    battleClick(intelligeBattle && this.props.status.battle)
   }
   render() {
     return (

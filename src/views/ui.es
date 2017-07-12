@@ -7,7 +7,6 @@ const initState = {
 export function reducer(state=initState, {type, tabInfo}) {
   switch (type) {
   case '@@TabSwitch':{
-    console.log('TabSwitch')
     return {
       ...state,
       ...tabInfo,
