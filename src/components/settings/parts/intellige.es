@@ -24,7 +24,7 @@ const IntelligeConfig = connect(() => (
       }
     }
     ret.status = {
-      battle: get(state, 'battle.started') || false
+      fighting: get(state, 'battle.fighting') || false
     }
     return ret
   }
@@ -34,8 +34,8 @@ const IntelligeConfig = connect(() => (
     this.state = Object.clone(props.state)
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.status.battle != this.props.status.battle) {
-      battleClick(this.state.battle && nextProps.status.battle)
+    if (nextProps.status.fighting != this.props.status.fighting) {
+      battleClick(this.state.battle && nextProps.status.fighting)
     }
   }
   handleSaveConfig = (e) => {
@@ -49,7 +49,7 @@ const IntelligeConfig = connect(() => (
       battle: intelligeBattle,
     })
     config.set('intellige.battle', intelligeBattle)
-    battleClick(intelligeBattle && this.props.status.battle)
+    battleClick(intelligeBattle && this.props.status.fighting)
   }
   render() {
     return (

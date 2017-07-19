@@ -4,11 +4,23 @@ export function reducer(state={}, {type, path, body, postBody, time}) {
   switch (type) {
   case '@@Response/api/v1/dungeon/saveEventStageStart':
     return compareUpdate(state, {
-      started: true,
+      event: true,
+      fighting: true,
     })
   case '@@Response/api/v1/dungeon/saveEventStageSuccess': 
     return compareUpdate(state, {
-      started: false,
+      event: false,
+      fighting: false,
+    })
+  case '@@Response/api/v1/dungeon/saveEncounterStageStart':
+    return compareUpdate(state, {
+      encounter: true,
+      fighting: true,
+    })
+  case '@@Response/api/v1/dungeon/saveEncounterStageSuccess': 
+    return compareUpdate(state, {
+      encounter: false,
+      fighting: false,
     })
   }
   return state
