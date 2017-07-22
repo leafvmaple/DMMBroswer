@@ -1,6 +1,6 @@
 {
   "name": "DMMBroswer",
-  "version": "v0.1.4",
+  "version": "v0.1.5",
   "description": "DMM Browser Tool",
   "main": "index.js",
   "scripts": {

@@ -2,6 +2,16 @@ import { compareUpdate } from 'scripts/utils/tools'
 
 export function reducer(state={}, {type, path, body, postBody, time}) {
   switch (type) {
+  case '@@Response/api/v1/dungeon/saveStageStart':
+    return compareUpdate(state, {
+      stage: true,
+      fighting: true,
+    })
+  case '@@Response/api/v1/dungeon/saveStageSuccess': 
+    return compareUpdate(state, {
+      stage: false,
+      fighting: false,
+    })
   case '@@Response/api/v1/dungeon/saveEventStageStart':
     return compareUpdate(state, {
       event: true,
