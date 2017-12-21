@@ -1,5 +1,5 @@
 {
-  "name": "DMMBroswer",
+  "name": "flower_broswer",
   "version": "v0.1.5",
   "description": "DMM Browser Tool",
   "main": "index.js",
@@ -52,6 +52,8 @@
   "devDependencies": {
     "electron": "~1.6.7",
     "electron-builder": "^16.6.1",
+    "eslint": "^4.1.1",
+    "eslint-config-google": "^0.9.1",
     "gulp": "^3.9.1",
     "node-unzip-2": "^0.2.1"
   },
