@@ -21,7 +21,7 @@ const getFlashUrl = (platform) =>
   USE_GITHUB_FLASH_MIRROR
   ? `https://github.com/dkwingsmt/PepperFlashFork/releases/download/latest/${platform}.zip`
   : `http://7xj6zx.com1.z0.glb.clouddn.com/poi/PepperFlash/${platform}.zip`
-  
+
 const THEME_LIST = {
   darkly: 'https://bootswatch.com/darkly/bootstrap.css',
   paperdark: 'https://raw.githubusercontent.com/ruiii/poi_theme_paper_dark/master/paperdark.css',
@@ -52,91 +52,90 @@ const extractZipCliAsync = (zipFile, destPath, descript = '') => {
       (error) => {
         if (error != null) {
           return reject(error);
-        } else {
-          log(`Extracting ${descript} finished`);
-          return resolve();
         }
-      }
-    )
-  })
-}
+        log(`Extracting ${descript} finished`);
+        return resolve();
+      },
+    );
+  });
+};
 
-const downloadThemesAsync = (themeRoot) =>
+const downloadThemesAsync = themeRoot =>
   Promise.all((() => {
-    const jobs = []
-    for (const theme of Object.keys(THEME_LIST)){
-      const themeUrl = THEME_LIST[theme]
-      const downloadDir = path.join(themeRoot, theme, 'css')
-      jobs.push(downloadAsync(themeUrl, downloadDir,`${theme}.css`, `${theme} theme`))
+    const jobs = [];
+    for (const theme of Object.keys(THEME_LIST)) {
+      const themeUrl = THEME_LIST[theme];
+      const downloadDir = path.join(themeRoot, theme, 'css');
+      jobs.push(downloadAsync(themeUrl, downloadDir, `${theme}.css`, `${theme} theme`));
     }
-    return jobs
-  })())
+    return jobs;
+  })());
 
 const downloadAsync = async (url, destDir, filename = path.basename(url), description) => {
-  log(`Downloading ${description} from ${url}`)
-  await fs.ensureDirAsync(destDir)
-  const destPath = path.join(destDir, filename)
+  log(`Downloading ${description} from ${url}`);
+  await fs.ensureDirAsync(destDir);
+  const destPath = path.join(destDir, filename);
   try {
-    await fs.accessAsync(destPath, fs.R_OK)
-    log(`Use existing ${destPath}`)
-  }catch (e) {
+    await fs.accessAsync(destPath, fs.R_OK);
+    log(`Use existing ${destPath}`);
+  } catch (e) {
     const [response, body] = await requestAsync({
-      url: url,
+      url,
       encoding: null,
-    })
-    if (response.statusCode != 200) {
-      log(`Response status code ${response.statusCode}`)
+    });
+    if (response.statusCode !== 200) {
+      log(`Response status code ${response.statusCode}`);
     }
-    await fs.writeFileAsync(destPath, body)
-    log(`Successfully downloaded to ${destPath}`)
+    await fs.writeFileAsync(destPath, body);
+    log(`Successfully downloaded to ${destPath}`);
   }
-  return destPath
-}
+  return destPath;
+};
 
 const PLATFORM_TO_PATHS = {
   'win32-ia32': 'win-ia32',
   'win32-x64': 'win-x64',
   'darwin-x64': 'mac-x64',
   'linux-x64': 'linux-x64',
-}
+};
 
 const extractZipAsync =
-  process.platform == 'win32'
-  ? extractZipNodeAsync
-  : extractZipCliAsync
+  process.platform === 'win32'
+    ? extractZipNodeAsync
+    : extractZipCliAsync;
 
 const downloadExtractZipAsync = async (url, downloadDir, filename, destPath,
-                                 description, useCli) => {
-  const MAX_RETRY = 5
-  let zipPath
+  description, useCli) => {
+  const MAX_RETRY = 5;
+  let zipPath;
   try {
-    zipPath = await downloadAsync(url, downloadDir, filename, description)
-    await extractZipAsync(zipPath, destPath, description)
-    } catch (e) {
-    log(`Downloading failed, retrying ${url}, reason: ${e}`)
-    await fs.removeAsync(zipPath)
+    zipPath = await downloadAsync(url, downloadDir, filename, description);
+    await extractZipAsync(zipPath, destPath, description);
+  } catch (e) {
+    log(`Downloading failed, retrying ${url}, reason: ${e}`);
+    await fs.removeAsync(zipPath);
   }
-}
+};
 
 const installFlashAsync = async (platform, downloadDir, flashDir) => {
-  const flash_url = getFlashUrl(platform)
-  await downloadExtractZipAsync(flash_url, downloadDir, `flash-${platform}.zip`, flashDir, 'flash plugin')
-}
+  const flashUrl = getFlashUrl(platform);
+  await downloadExtractZipAsync(flashUrl, downloadDir, `flash-${platform}.zip`, flashDir, 'flash plugin');
+};
 
 const installThemeAsync = async (themeDir) => {
-  await downloadThemesAsync(themeDir)
-}
+  await downloadThemesAsync(themeDir);
+};
 
 export const getFlashAsync = async (dmmVersion) => {
-  const BUILD_ROOT = path.join(__dirname, BUILD_DIR_NAME)
-  const downloadDir = path.join(BUILD_ROOT, DOWNLOADDIR_NAME)
-  const platform = `${process.platform}-${process.arch}`
-  await fs.removeAsync(path.join(__dirname, 'pepper_flash'))
-  const flashDir = path.join(__dirname, 'pepper_flash', PLATFORM_TO_PATHS[platform])
-  await installFlashAsync(platform, downloadDir, flashDir)
-}
+  const BUILD_ROOT = path.join(__dirname, BUILD_DIR_NAME);
+  const downloadDir = path.join(BUILD_ROOT, DOWNLOADDIR_NAME);
+  const platform = `${process.platform}-${process.arch}`;
+  await fs.removeAsync(path.join(__dirname, 'pepper_flash'));
+  const flashDir = path.join(__dirname, 'pepper_flash', PLATFORM_TO_PATHS[platform]);
+  await installFlashAsync(platform, downloadDir, flashDir);
+};
 
 export const getThemeAsync = async (dmmVersion) => {
-  const themeDir = path.join(__dirname, 'src', 'assets', 'themes')
-  await installThemeAsync(themeDir)
-}
+  const themeDir = path.join(__dirname, 'src', 'assets', 'themes');
+  await installThemeAsync(themeDir);
+};

@@ -29,6 +29,8 @@
     "coffee-script": "^1.9.3",
     "colors": "^1.1.2",
     "cson": "^4.0.0",
+    "electron": "~1.6.7",
+    "electron-builder": "^16.6.1",
     "fast-memoize": "^2.0.2",
     "fs-extra": "^2.1.2",
     "header-case-normalizer": "^1.0.3",
@@ -49,17 +51,18 @@
     "reselect": "^3.0.0",
     "socks5-client": "^1.2.0",
     "socks5-http-client": "^1.0.1",
-    "node-unzip-2": "^0.2.1"
+    "node-unzip-2": "^0.2.1",
+    "webpack": "^3.10.0"
   },
   "devDependencies": {
-    "electron": "~1.6.7",
-    "electron-builder": "^16.6.1",
+    "babel-eslint": "^8.0.3",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
     "eslint-plugin-vue": "^2.1.0",
+    "eslint-import-resolver-webpack": "^0.8.3",
     "gulp": "^3.9.1"
   },
   "directories": {
