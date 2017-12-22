@@ -1,19 +1,21 @@
-require('babel-register')(require('./babel.config'))
-const path = require('path-extra')
-const Promise = require('bluebird')
-const {promisify} = Promise
-const fs = Promise.promisifyAll(require('fs-extra'))
-const request = Promise.promisifyAll(require('request'))
-const requestAsync = promisify(request, {multiArgs: true})
-const child_process = require('child_process')
-const unzip = require('node-unzip-2')
+require('babel-register')(require('./babel.config'));
+const path = require('path-extra');
+const Promise = require('bluebird');
 
-const {log} = require('./src/lib/utils')
+const { promisify } = Promise;
+const fs = Promise.promisifyAll(require('fs-extra'));
+const request = Promise.promisifyAll(require('request'));
 
-const USE_GITHUB_FLASH_MIRROR = false
+const requestAsync = promisify(request, { multiArgs: true });
+const childProcess = require('child_process');
+const unzip = require('node-unzip-2');
 
-const BUILD_DIR_NAME = 'build'
-const DOWNLOADDIR_NAME = 'download'
+const { log } = require('./src/lib/utils');
+
+const USE_GITHUB_FLASH_MIRROR = false;
+
+const BUILD_DIR_NAME = 'build';
+const DOWNLOADDIR_NAME = 'download';
 
 const getFlashUrl = (platform) =>
   USE_GITHUB_FLASH_MIRROR
@@ -21,37 +23,38 @@ const getFlashUrl = (platform) =>
   : `http://7xj6zx.com1.z0.glb.clouddn.com/poi/PepperFlash/${platform}.zip`
   
 const THEME_LIST = {
-  darkly:     'https://bootswatch.com/darkly/bootstrap.css',
-  paperdark:  'https://raw.githubusercontent.com/ruiii/poi_theme_paper_dark/master/paperdark.css',
-}
+  darkly: 'https://bootswatch.com/darkly/bootstrap.css',
+  paperdark: 'https://raw.githubusercontent.com/ruiii/poi_theme_paper_dark/master/paperdark.css',
+};
 
-const extractZipNodeAsync = (zipFile, destPath, descript="") => {
-  log(`Extract ${descript}`)
+const extractZipNodeAsync = (zipFile, destPath, descript = '') => {
+  log(`Extract ${descript}`);
   return new Promise((resolve) => {
-    fs.ensureDirSync(path.dirname(destPath))
+    fs.ensureDirSync(path.dirname(destPath));
     fs.createReadStream(zipFile)
-    .pipe(unzip.Extract({ path: destPath }))
-    .on('close', () => {
-      log(`Extracting ${descript} finished`)
-      return resolve()
-    })
-  })
-}
+      .pipe(unzip.Extract({ path: destPath }))
+      .on('close', () => {
+        log(`Extracting ${descript} finished`);
+        return resolve();
+      });
+  });
+};
 
-const extractZipCliAsync = (zipFile, destPath, descript="") => {
-  log(`Extract ${descript}`)
-  fs.ensureDirSync(destPath)
-  return new Promise ((resolve, reject) => {
-    const command = `unzip '${zipFile}'`
-    child_process.exec(command, {
-      cwd: destPath,
-    },
+const extractZipCliAsync = (zipFile, destPath, descript = '') => {
+  log(`Extract ${descript}`);
+  fs.ensureDirSync(destPath);
+  return new Promise((resolve, reject) => {
+    const command = `unzip '${zipFile}'`;
+    childProcess.exec(
+      command, {
+        cwd: destPath,
+      },
       (error) => {
         if (error != null) {
-          return reject(error)
+          return reject(error);
         } else {
-          log(`Extracting ${descript} finished`)
-          return resolve()
+          log(`Extracting ${descript} finished`);
+          return resolve();
         }
       }
     )
